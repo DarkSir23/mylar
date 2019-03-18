@@ -1,0 +1,20 @@
+        <li class="nav-item">
+            <a class="nav-link py-0 mt-1 button btn btn-sm btn-${color}"
+               % if href:
+                    href="${href}"
+               % endif
+               % if onClick:
+                    onClick="${onClick}"
+               % endif
+               % if id:
+                    id="${id}"
+               % endif
+               >
+            <i class="fas ${icon}"></i>
+                <span>
+                    % if name:
+                    ${name}
+                    % endif
+                </span>
+            </a>
+        </li>

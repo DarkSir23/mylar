@@ -43,6 +43,7 @@ _CONFIG_DEFINITIONS = OrderedDict({
     'FFTONEWCOM_DIR': (bool, 'General', False),
     'FOLDER_SCAN_LOG_VERBOSE': (bool, 'General', False),
     'INTERFACE': (str, 'General', 'default'),
+    'BOOTSWATCH_THEME': (str, 'General', 'cerulean'),
     'CORRECT_METADATA': (bool, 'General', False),
     'MOVE_FILES': (bool, 'General', False),
     'RENAME_FILES': (bool, 'General', False),

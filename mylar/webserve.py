@@ -58,6 +58,9 @@ def serve_template(templatename, **kwargs):
     except:
         return exceptions.html_error_template().render()
 
+def sidebar_button(icon=None, href=None, onClick=None, color='primary', name='', id=None):
+    return serve_template('sidebar_button.html', icon=icon, href=href, onClick=onClick, color=color, name=name, id=id)
+
 class WebInterface(object):
 
     auth = AuthController()
@@ -4871,6 +4874,8 @@ class WebInterface(object):
                     "use_maxsize": helpers.checked(mylar.CONFIG.USE_MAXSIZE),
                     "maxsize": mylar.CONFIG.MAXSIZE,
                     "interface_list": interface_list,
+                    "bootswatch_theme": mylar.CONFIG.BOOTSWATCH_THEME,
+                    "bootswatch_themelist": mylar.BOOTSWATCH_THEMELIST,
                     "dupeconstraint": mylar.CONFIG.DUPECONSTRAINT,
                     "ddump": helpers.checked(mylar.CONFIG.DDUMP),
                     "duplicate_dump": mylar.CONFIG.DUPLICATE_DUMP,

@@ -1,0 +1,238 @@
+<%!
+    import mylar
+    from mylar import version
+    http_root = mylar.CONFIG.HTTP_ROOT
+    theme=mylar.CONFIG.BOOTSWATCH_THEME
+%>
+<!doctype html>
+<html>
+  <head>
+
+    <meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mylar - ${title}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/png"  href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/> -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.1.3/${theme}/bootstrap.min.css" rel="stylesheet">
+    <link href="${http_root}fa/css/all.min.css" rel="stylesheet">
+    <link href="${http_root}css/bootstrap.css?v=1" rel="stylesheet">
+    <link href="${http_root}css/jquery-ui.css" rel="stylesheet">
+    <link href="${http_root}css/jquery-ui.structure.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <link href="${http_root}css/sb-admin.css" rel="stylesheet">
+    <link href="/css/bootstrap_custom.css?v=1" rel="stylesheet">
+    <link rel="apple-touch-icon" href="images/mylarlogo.png"/>
+    <link rel="apple-touch-icon-precomposed" href="images/mylarlogo.png"/>
+    <script src="${http_root}js/script.js"></script>
+    <script src="${http_root}js/waiting.js"></script>
+    <script src="${http_root}js/natural.js"></script>
+    <script src="${http_root}js/bootbox.min.js"></script>
+    <script src="${http_root}js/bootstrap-notify.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="${http_root}js/jquery.easing.min.js"></script>
+    <script src="${http_root}js/Chart.min.js"></script>
+    <script src="${http_root}js/sb-admin.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.3.0.min.js"></script>
+    <script type="text/javascript" src="js/mylar-bootstrap.js?v=2"></script>
+    ${next.headIncludes()}
+    <script type="text/javascript">
+      // Allow the user to reset the filter box
+      $(document).ready(function () {
+          $.fn.dataTableExt.oApi.clearSearch = function ( oSettings ) {
+              var table = this;
+              var clearSearch = $('<i class="fa fa-remove" style="cursor:pointer;width:16px;text-align:left;" title="Reset Filter"></i>');
+
+              $(clearSearch).click( function ()
+                      {
+                              table.fnFilter('');
+                              $('input[type=search]').val('');
+                      });
+              $(oSettings.nTableWrapper).find('div.dataTables_filter').append(clearSearch);
+              $(oSettings.nTableWrapper).find('div.dataTables_filter label').css('margin-right', '-16px');//16px the image width
+              $(oSettings.nTableWrapper).find('div.dataTables_filter input').css('padding-right', '16px');
+          }
+
+          //auto-execute, no code needs to be added
+          $.fn.dataTable.models.oSettings['aoInitComplete'].push( {
+              "fn": $.fn.dataTableExt.oApi.clearSearch,
+              "sName": 'whatever'
+          });
+      });
+    </script>
+    ${next.javascriptIncludes()}
+    <script type="text/javascript">
+      // Check or uncheck all checkboxes in the same table
+      function toggleAll(e) {
+          var table = $(e).closest('table');
+          $('td input:checkbox', table).prop('checked', e.checked);
+      }
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+      <!-- <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script> -->
+  </head>
+  <body id="page-top">
+    <nav class="navbar navbar-expand navbar-dark bg-primary static-top">
+        <img width="48" height="48" class="d-inline-block align-top" src="images/mylarlogo.png" alt="mylar">
+                      <a class="navbar-brand" href="home">
+                          Mylar
+                      </a>
+        <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+      </button>
+        <form action="${http_root}searcht" method="get" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="input-group">
+          <input type="text" name="name" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-dark" type="button">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </nav>
+      <div id="wrapper">
+          <ul class="sidebar navbar-dark bg-dark navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link" href="${http_root}home">
+                      <i class="fas fa-fw fa-home"></i>
+                      <span>Series List</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                <%
+                wanted_link = 'upcoming'
+                if mylar.WANTED_TAB_OFF:
+                    wanted_link = '#'
+                %>
+                  <a class="nav-link" href="${http_root}${wanted_link}">
+                      <i class="fas fa-fw fa-hand-holding"></i>
+                      <span>Wanted</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="${http_root}pullist">
+                      <i class="fas fa-fw fa-calendar-alt"></i>
+                      <span>This Week</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="${http_root}manage">
+                      <i class="fas fa-fw fa-tasks"></i>
+                      <span>Manage</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="${http_root}history">
+                      <i class="fas fa-fw fa-history"></i>
+                      <span>History</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="${http_root}logs">
+                      <i class="fas fa-fw fa-file-alt"></i>
+                      <span>Logs</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="${http_root}config">
+                  <i class="fas fa-fw fa-cogs"></i>
+                  <span>Config</span></a>
+              </li>
+              <span class="border-top my-3"></span>
+          ${next.headerIncludes()}
+        </ul>
+
+        <div id="content-wrapper" class="main container">
+          <div class="container-fluid">
+          ${next.body()}
+          </div>
+          <footer class="sticky-footer">
+            <div class="container my-auto">
+              <div class="copyright text-center my-auto">
+                <span>Version: <em>${mylar.CURRENT_VERSION}</em>
+				(${mylar.CONFIG.GIT_BRANCH})</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+
+  </body>
+      <script type="text/javascript">
+      msg = '';
+      title = 'Mylar Update';
+      % if not mylar.CURRENT_VERSION:
+        msg = '<div class="input-group">You are running an unknown version of Mylar.</div><a href="update" class="btn btn-xs btn-primary pull-right">Update</a> or <a href="#" class="btn brn-xs btn-primary" data-toggle="tooltip" title="Ignore the update message for 24 hours" id="ignoreUpdate">Ignore</a>'
+      % elif mylar.CURRENT_VERSION != mylar.LATEST_VERSION and mylar.INSTALL_TYPE != 'win' and mylar.COMMITS_BEHIND > 0:
+        msg = '<div class="input-group"><a href="https://github.com/evilhero/mylar/compare/${mylar.CURRENT_VERSION}...${mylar.LATEST_VERSION}" target="_blank">New version</a> available. You are ${mylar.COMMITS_BEHIND} commits behind.</div><div class="pull-right"><a href="#" class="btn btn-xs btn-primary" data-toggle="tooltip" title="Ignore the update message for 24 hours" id="ignoreUpdate">Ignore</a>&nbsp;<a href="update" class="btn btn-xs btn-primary" data-toggle="tooltip" title="Update to the latest release">Update</a></div>'
+      % endif
+
+      $(document).ready(function() {
+      if (readCookie('ignoreUpdate') != null) { msg = '' }
+
+      if (msg != '') {
+        $.notify({
+            icon: "images/mylarlogo.png",
+            title: '<strong>'+title+'</strong>',
+            message: msg
+        },{
+            icon_type: 'image'
+        },{
+              type: 'warning'
+          });
+      }
+
+      $('#ignoreUpdate').click(function() {
+          createCookie("ignoreUpdate", true, 1);
+      });
+      });
+
+      // Initialise tooltips
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+
+
+      function createCookie(name, value, days) {
+      var expires;
+
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+          expires = "; expires=" + date.toGMTString();
+      } else {
+          expires = "";
+      }
+      document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+      }
+
+      function readCookie(name) {
+      var nameEQ = encodeURIComponent(name) + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      }
+      return null;
+      }
+
+      function eraseCookie(name) {
+      createCookie(name, "", -1);
+      }
+    </script>
+
+</html>
+<%def name="javascriptIncludes()"></%def>
+<%def name="headIncludes()"></%def>
+<%def name="headerIncludes()"></%def>

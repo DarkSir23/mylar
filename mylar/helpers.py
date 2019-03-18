@@ -28,6 +28,7 @@ import sys
 import ctypes
 import platform
 import calendar
+import urllib2
 import itertools
 import shutil
 import hashlib
@@ -4098,6 +4099,41 @@ def file_ops(path,dst,arc=False,one_off=False):
 
     else:
         return False
+
+def fetchURL(URL, headers=None, retry=True):
+    """ Return the result of fetching a URL and True if success
+        Otherwise return error message and False
+        Allow one retry on timeout by default"""
+    request = urllib2.Request(URL)
+    # if mylar.CONFIG['PROXY_HOST']:
+    #     request.set_proxy(mylar.CONFIG['PROXY_HOST'], mylar.CONFIG['PROXY_TYPE'])
+    if headers is None:
+        # some sites insist on having a user-agent, default is to add one
+        # if you don't want any headers, send headers=[]
+        request.add_header('User-Agent', mylar.USER_AGENT)
+    else:
+        for item in headers:
+            request.add_header(item, headers[item])
+    try:
+        resp = urllib2.urlopen(request, timeout=30)
+        if str(resp.getcode()).startswith("2"):  # (200 OK etc)
+            try:
+                result = resp.read()
+            except socket.error as e:
+                return str(e), False
+            return result, True
+        return str(resp.getcode()), False
+    except socket.timeout as e:
+        if not retry:
+            logger.error(u"fetchURL: Timeout getting response from %s" % URL)
+            return str(e), False
+        logger.debug(u"fetchURL: retrying - got timeout on %s" % URL)
+        result, success = fetchURL(URL, headers=headers, retry=False)
+        return result, success
+    except Exception as e:
+        if hasattr(e, 'reason'):
+            return e.reason, False
+        return str(e), False
 
 from threading import Thread
 

@@ -89,6 +89,10 @@ def initialize(options):
             'tools.staticdir.on': True,
             'tools.staticdir.dir': "css"
         },
+        '/fa': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': "fa"
+        },
         '/js': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': "js"

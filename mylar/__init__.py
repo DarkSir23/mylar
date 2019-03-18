@@ -150,6 +150,7 @@ STATIC_COMICRN_VERSION = "1.01"
 STATIC_APC_VERSION = "2.04"
 SAB_PARAMS = None
 COMICINFO = []
+BOOTSWATCH_THEMELIST = []
 SCHED = BackgroundScheduler({
                              'apscheduler.executors.default': {
                                  'class':  'apscheduler.executors.pool:ThreadPoolExecutor',
@@ -171,7 +172,7 @@ def initialize(config_file):
                USE_SABNZBD, USE_NZBGET, USE_BLACKHOLE, USE_RTORRENT, USE_UTORRENT, USE_QBITTORRENT, USE_DELUGE, USE_TRANSMISSION, USE_WATCHDIR, SAB_PARAMS, \
                PROG_DIR, DATA_DIR, CMTAGGER_PATH, DOWNLOAD_APIKEY, LOCAL_IP, STATIC_COMICRN_VERSION, STATIC_APC_VERSION, KEYS_32P, AUTHKEY_32P, FEED_32P, FEEDINFO_32P, \
                MONITOR_STATUS, SEARCH_STATUS, RSS_STATUS, WEEKLY_STATUS, VERSION_STATUS, UPDATER_STATUS, DBUPDATE_INTERVAL, LOG_LANG, LOG_CHARSET, APILOCK, SEARCHLOCK, DDL_LOCK, LOG_LEVEL, \
-               SCHED_RSS_LAST, SCHED_WEEKLY_LAST, SCHED_MONITOR_LAST, SCHED_SEARCH_LAST, SCHED_VERSION_LAST, SCHED_DBUPDATE_LAST, COMICINFO, SEARCH_TIER_DATE
+               SCHED_RSS_LAST, SCHED_WEEKLY_LAST, SCHED_MONITOR_LAST, SCHED_SEARCH_LAST, SCHED_VERSION_LAST, SCHED_DBUPDATE_LAST, COMICINFO, SEARCH_TIER_DATE, BOOTSWATCH_THEMELIST
 
         cc = mylar.config.Config(config_file)
         CONFIG = cc.read(startup=True)
@@ -261,6 +262,7 @@ def initialize(config_file):
         # Store the original umask
         UMASK = os.umask(0)
         os.umask(UMASK)
+        BOOTSWATCH_THEMELIST = build_bootstrap_themes()
 
         _INITIALIZED = True
         return True
@@ -328,6 +330,32 @@ def launch_browser(host, port, root):
         webbrowser.open('http://%s:%i%s' % (host, port, root))
     except Exception, e:
         logger.error('Could not launch browser: %s' % e)
+
+
+def build_bootstrap_themes():
+    themelist = []
+    if not os.path.isdir(os.path.join(PROG_DIR, 'data', 'interfaces', 'bootstrap')):
+        logger.info("Bootstrap not installed.")
+        return themelist  # return empty if bootstrap interface not installed
+
+    URL = 'http://bootswatch.com/api/4.json'
+    result, success = helpers.fetchURL(URL, None, False)  # use default headers, no retry
+
+    if not success:
+        logger.info("Error getting bootstrap themes : %s" % result)
+        return themelist
+
+    try:
+        results = json.loads(result)
+        for theme in results['themes']:
+            themelist.append(theme['name'].lower())
+    except Exception as e:
+        # error reading results
+        logger.info('JSON Error reading bootstrap themes, %s' % str(e))
+
+    logger.info("Bootstrap found %i themes" % len(themelist))
+    return themelist
+
 
 def start():
 

@@ -1,0 +1,83 @@
+/*
+
+Bootstrap Styles
+*/
+
+.issue-popup {
+    width: 600px;
+    display: none;
+    background: #333;
+    padding: 5px;
+    border: 2px solid #ddd;
+    color: white;
+    font-size: 1.2em;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    z-index: 99999;
+    box-shadow: 0px 0px 20px #999;
+    /* CSS3 */
+        -moz-box-shadow: 0px 0px 20px #999;
+    /* Firefox */
+        -webkit-box-shadow: 0px 0px 20px #999;
+    /* Safari, Chrome */
+	border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    /* Firefox */
+        -webkit-border-radius: 3px;
+    /* Safari, Chrome */;
+}
+#subnav {
+/*    position: fixed;
+    top: 60px;
+    z-index: 1030; */
+    position: relative;
+    float: bottom;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+#headercontainer {
+/*    position: fixed;
+    top: 60px;
+    z-index: 1030; */
+    position: relative;
+    float: top;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.bookcover-sm {
+    width: 100px;
+    margin: auto auto;
+}
+.bookcover-xs {
+    width: 50px;
+    margin: auto auto;
+}
+.table-responsive {
+    border: 0;
+}
+
+#subhead_container .form-group {
+    margin-bottom: 0;
+}
+.progress {
+    height: auto;
+}
+.progress .progress-bar {
+    font-size: inherit;
+    line-height: inherit;
+    min-height: 10px;
+}
+
+body.modal-open-noscroll {
+  margin-right: 0!important;
+  overflow: hidden;
+}
+.modal-open-noscroll .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+  margin-right: 0!important;
+}
+select {
+    font-family: 'FontAwesome', 'sans-serif';
+}

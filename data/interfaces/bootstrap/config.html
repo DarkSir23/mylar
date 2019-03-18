@@ -1,0 +1,636 @@
+<%inherit file="base.html"/>
+<%!
+    import mylar
+    from operator import itemgetter
+    from mylar import logger
+%>
+<%def name="headerIncludes()">
+    <div id="subhead_container">
+        <div id="subhead_menu">
+            <a onclick="self.shutdownQA(this)" class="button btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Terminate the Mylar process - Be careful if you're doing this remotely"><i class="fa fa-power-off"></i> Shutdown</a>
+            <a class="button btn btn-sm btn-warning" onclick="self.restartQA(this, '', '')" data-toggle="tooltip" data-placement="bottom" title="Restart Mylar"><i class="fa fa-refresh"></i> Restart</a>
+            <a class="button btn btn-sm btn-primary" href="checkForUpdates" data-toggle="tooltip" data-placement="bottom" title="Check for the latest release"><i class="fa fa-check-square-o"></i> Check Version</a>
+      </div>
+    </div>
+</%def>
+<%def name="body()">
+<%
+def configDisplay(confobject):
+    returntext = ''
+    if type(confobject) is list:
+        for item in confobject:
+            returntext += configDisplay(item)
+    elif type(confobject) is dict:
+        if confobject['type'] == 'column':
+            if 'width' in confobject.keys() and confobject['width']:
+                returntext += '<div class="col-md-%s">' % confobject['width']
+            else:
+                returntext += '<div class="col-md-6">'
+            returntext += configDisplay(confobject['content'])
+            returntext += '</div>'
+        elif confobject['type'] == 'legend':
+            returntext += '<legend>%s</legend>' % confobject['text']
+        elif confobject['type'] == 'text' or confobject['type'] == 'password':
+            returntext += '<div class="form-group">'
+            returntext += '<label for="%s" class="col-form-label">%s</label>' % (confobject['id'], confobject['label'])
+            returntext += '<input class="form-control" id="%s" type="%s" name="%s" value="%s">' % (confobject['id'], confobject['type'], confobject['id'], config[confobject['id']])
+            if 'small' in confobject.keys() and confobject['small']:
+                returntext += '<small>%s</small>' % confobject['small']
+            returntext += '</div>'
+        elif confobject['type'] == 'checkbox':
+            returntext += '<div class="form-check">'
+            returntext += '<input class="form-check-input" id="%s" type="checkbox" name="%s" value="1" %s/>' % (confobject['id'], confobject['id'], config[confobject['id']])
+            returntext += '<label for="%s" class="form-check-label">%s</label>' %  (confobject['id'], confobject['label'])
+            if 'small' in confobject.keys() and confobject['small']:
+                returntext += '<small>%s</small>' % confobject['small']
+            returntext += '</div>'
+        elif confobject['type'] == 'container':
+            returntext += '<div id="%s">' % confobject['id']
+            returntext += configDisplay(confobject['content'])
+            returntext += '</div>'
+        elif confobject['type'] == 'select':
+            returntext += '<div class="form-group">'
+            returntext += '<label for="%s" class="col-form-label">%s</label>' % (confobject['id'], confobject['label'])
+            returntext += '<select class="form-control" id="%s" name="%s">' % (confobject['id'], confobject['id'])
+            for option in confobject['options']:
+                if option['value'] == config[confobject['id']]:
+                    outputselect = 'selected'
+                else:
+                    outputselect = ''
+                returntext += '<option value="%s" %s>%s</option>' % (option['value'], outputselect, option['label'])
+            returntext += '</select>'
+            returntext += '</div>'
+    return returntext
+%>
+    <form action="configUpdate" method="post">
+        <div role="tab-table" class="hidden mt-2">
+            <div>
+                <ul class="nav nav-pills" role="tablist" id="configtabs">
+                    <li class="nav-item" role="presentation" id="1" aria-controls="information"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="information" href="#information">Information</a></li>
+                    <li class="nav-item" role="presentation" id="2" aria-controls="mylarinterface"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="mylarinterface" href="#mylarinterface">Web Interface</a></li>
+                    <li class="nav-item" role="presentation" id="3" aria-controls="download_settings"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="download_settings" href="#download_settings">Download Settings</a></li>
+                    <li class="nav-item" role="presentation" id="4" aria-controls="search_providers"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="search_providers" href="#search_providers">Search Providers</a></li>
+                    <li class="nav-item" role="presentation" id="5" aria-controls="post_processing"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="post_processing" href="#post_processing">Quality &amp; Post Processing</a></li>
+                    <li class="nav-item" role="presentation" id="6" aria-controls="advanced"><a class="nav-link" role="tab" data-toggle="tab" aria-controls="advanced" href="#advanced">Advanced Settings</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade" id="information">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                      <fieldset>
+                                      <legend>System Information</legend>
+                                           <div>
+                                                <label><strong>Mylar Version: </strong> ${config['branch']}</br> -- ${config['br_type']}  build ${config['br_version']}.</label></br>
+                                                <label><strong>Python Version :</strong> ${config['py_version']}</label></br>
+                                                <label><strong>Language :</strong> ${config['lang']}</label></br></br>
+                                                <legend>Mylar Program Options</legend>
+                                                <label><strong>Mylar Data Directory :</strong>  ${config['data_dir']}</label></br>
+                                                <label><strong>Mylar Program Directory :</strong> ${config['prog_dir']}</label></br>
+                                                <label><strong>Mylar Cache Directory :</strong> ${config['cache_dir']}</label></br>
+                                                <a href="config_dump"><label><strong>Mylar Config File :</strong>${config['config_file']}</label></a></br>
+
+                                           </div>
+                                       </fieldset>
+                                       <fieldset>
+                                           <legend>Donations</legend>
+                                             <a name="donate"></a>
+                                             <div align="center">
+                                                <label><strong>Mylar is free to use,</br>
+                                                but you can contribute and support the development</br>
+                                                by buying me a coffee (or several)</strong></label></br></br>
+                                             </div>
+                                             <div style="width: 60%; margin: 0px auto;">
+                                                <a id="navDonate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=EWQADB5AMVRFU" rel="noreferrer" onclick="window.open('http://dereferer.org/?' + this.href); return false;"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="[donate]" /></a>
+                                                <a href="https://flattr.com/submit/auto?user_id=evilhero&url=https://github.com/evilhero/mylar&title=Mylar%20Donation%description=Supporting&20the%development%20of%20Mylar&language=en_CA&hidden=1&category=software" target="_blank">
+                                                   <img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" align="center">
+                                                </a>
+                                                <a href="#" onclick="javascript:window.prompt('Please copy/paste my Bitcoin address into your Bitcoin client.', '18eCE9wZxnNiZgE4Cc5pwJMnMjEfhdmH4U');"><img src="interfaces/default/images/bitcoin.png" alt="Bitcoin" height="20" align="center"></a>
+                                             </div>
+                                       </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                       <fieldset>
+                                          <legend>Bragging Rights</legend>
+                                            <div>
+                                               <label><strong># of Series you're watching: </strong> ${comicinfo['COUNT_COMICS']}</label><br/>
+                                               <label><strong># of Issues you're watching: </strong> ${comicinfo['COUNT_ISSUES']}</label><br/>
+                                               <label><strong># of Issues you actually have: </strong> ${comicinfo['COUNT_HAVES']}</label><br/>
+                                               <label><strong> ... total HD-space being used: </strong> ${comicinfo['COUNT_SIZE']}</label>
+                                            </div>
+                                       </fieldset>
+                                    <fieldset class="flex-column">
+                                        <legend>Useful Information</legend>
+                                        <label><strong>Forums </strong> <a href="https://forum.mylarcomics.com/" target="_blank">https://forum.mylarcomics.com</a></label><br/>
+                                        <label><strong>Source </strong> <a href="https://github.com/evilhero/mylar/" target="_blank">https://github.com/evilhero/mylar/</a></label><br/>
+                                        <label><strong>Issues </strong> <a href="https://github.com/evilhero/mylar/issues" target="_blank">https://github.com/evilhero/mylar/issues/</a></label><br/>
+                                        <label><strong>Internet Relay Chat </strong> <a href="irc://irc.freenode.net/#mylar" target="_blank">#mylar on irc.freenode.net</a></label>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Branch history</legend>
+                                            <div>${config['branch_history']}</div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <div class="row">
+                                            <label style="font-size:16px;font-weight:bold;">Provider Usage (${config['dltotals']})</label>
+                                            <a href="#" onclick="show_stats();"><span style="vertical-align:bottom;text-align:center;float:right;">Show Stats</span></a>
+                                        </div>
+                                        <div id="stats" style="display:none">
+                                        </br>
+                                        %for dl in config['dlstats']:
+                                            <%
+                                                dlline = '%s: %s snatches' % (dl[0], dl[1])
+                                                if dl[0] == 'newznab':
+                                                    dlline += '<small>  (*erroneous collection data)</small>'
+                                            %>
+                                            ${dlline}</br>
+                                        %endfor
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="mylarinterface">
+                        <div class="configtable">
+                            <div class="row">
+                                ${configDisplay(cformdata['interface_1'])}
+                                <div class="col-md-6">
+                                    <fieldset>
+                                         <div class="form-check">
+                                             <input class="form-check-input" type="checkbox" id="launch_browser" name="launch_browser" value="1" ${config['launch_browser']} />
+                                             <label class="form-check-label" for="launch_browser">
+                                                 Launch Browser on Startup
+                                             </label>
+                                         </div>
+
+                                         <div class="form-check">
+                                             <input class="form-check-input" id="syno_fix" type="checkbox" name="syno_fix" value="1" ${config['syno_fix']} />
+                                             <label class="form-check-label" for="syno_fix">
+                                                 Synology Fix
+                                             </label>
+                                             <br/><small>*Use this if experiencing parsing problems*</small>
+                                         </div>
+                                    </fieldset>
+                                    <fieldset>
+                                         <legend>Mylar Theme</legend>
+                                         <div class="form-group">
+                                             <label class="col-form-label" for="interface">Mylar Theme</label>
+                                             <select class="form-control" id="interface" name="interface">
+                                              %for x in config['interface_list']:
+                                                     <%
+                                                            if config['interface'] == x:
+                                                                outputselect = 'selected="selected"'
+                                                            else:
+                                                                outputselect = ''
+                                                      %>
+                                                      <option value="${x}" ${outputselect}>${x}</option>
+                                              %endfor
+                                             </select>
+                                        </div>
+                                         <div class="form-group">
+                                             <label class="col-form-label" for="bootswatch_theme">Bootswatch Theme</label>
+                                             <select class="form-control" id="bootswatch_theme" name="bootswatch_theme">
+                                              %for x in config['bootswatch_themelist']:
+                                                     <%
+                                                            if config['bootswatch_theme'] == x:
+                                                                outputselect = 'selected="selected"'
+                                                            else:
+                                                                outputselect = ''
+                                                      %>
+                                                      <option value="${x}" ${outputselect}>${x}</option>
+                                              %endfor
+                                             </select>
+                                             <br/><small>*Only applicable if Bootstrap is selected*</small>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                    <legend>Annual Handling</legend>
+                                        <div class="form-group">
+                                            <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>Series need to be Refreshed for annuals to appear</small>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="annuals_on" type="checkbox" name="annuals_on" value="1" ${config['annuals_on']} />
+                                            <label class="form-check-label" for="annuals_on">
+                                                Enable Series-Annual Integration
+                                            </label>
+                                        </div>
+                                         </br><small>Enabled: Annuals are tracked as part of the series it belongs to</small></br>
+                                         <small>Disabled: Annuals are tracked independently and will appear on your watchlist as a series</small>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                <fieldset>
+                                    <legend>API</legend>
+                                    <div class="form-group">
+                                       <label for="comicvine_api" class="col-form-label">ComicVine API Key</label>
+                                       <input id="comicvine_api" class="form-control" type="text" name="comicvine_api" value="${config['comicvine_api']}" title="get one for free @ http://api.comicvine.com" size="40">
+                                       <small>specify your own CV API key here </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="api_enabled" type="checkbox" name="api_enabled" value="1" ${config['api_enabled']} />
+                                            <label class="form-check-label" for="api_enabled">
+                                                Enable API
+                                            </label>
+                                        </div>
+                                        <div id="apioptions">
+                                           <div class="form-group">
+                                              <label for="api_key" class="col-form-label">Mylar API key</label>
+                                              <input class="form-control" type="text" name="api_key" id="api_key" value="${config['api_key']}" size="20">
+                                              <input class="button btn btn-sm btn-primary" type="button" value="Generate" id="generate_api">
+                                              <small>Current API key: <strong>${config['api_key']}</strong></small>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>OPDS</legend>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="opds_enable" type="checkbox" name="opds_enable" value="1" ${config['opds_enable']} />
+                                            <label class="form-check-label" for="opds_enable">Enable OPDS</label>
+                                        </div>
+                                        <div id="opdsoptions">
+                                            <div class="form-check">
+                                                <small>Access the OPDS server at http://mylarhost/opds/ - keep in mind your scheme (http or https), your hostname, port, and any http_root you may have set. </small></br>
+                                                <input class="form-check-input" id="opds_authentication" type="checkbox" name="opds_authentication" value="1" ${config['opds_authentication']} />
+                                                <label class="form-check-label" for="opds_authentication">OPDS Requires Credentials</label>
+                                                <%
+                                                     opds_notes = "Require authentication for OPDS.  If checked\nyou will need to provide a username/password.\nThe service user name will work (if set).  Additionally,\nyou can provide a user with only OPDS access below.\nNOTE: If this is not checked, OPDS will be available\nwithout a password."
+                                                %>
+                                                <a href="#" title="${opds_notes}"><img src="interfaces/default/images/info32.png" height="16" alt="" /></a>
+                                                <div id="opdscredentials">
+                                                     <div class="form-group">
+                                                         <label for="opds_username" class="col-form-label">OPDS Username</label>
+                                                         <input class="form-control" id="opds_username" type="text" name="opds_username" value="${config['opds_username']}" size="30">
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                       <label for="opds_password" class="col-form-label">OPDS Password</label>
+                                                       <input class="form-control" id="opds_password" type="password" name="opds_password" value="${config['opds_password']| h}" size="30">
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="opds_metainfo" type="checkbox" name="opds_metainfo" value="1" ${config['opds_metainfo']} />
+                                                <label class="form-check-label" for="opds_metainfo">OPDS Fetch MetaInfo</label>
+                                                </br><small>Warning: Enabling this will slow down issue listing significantly, but will give writer info and book summary</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Interval</legend>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="search_interval">NZB Search Interval</label>
+                                        <input id="search_interval" class="form-control" type="text" name="search_interval" value="${config['search_interval']}" size="4">mins
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="nzb_startup_search" type="checkbox" name="nzb_startup_search" value="1" ${config['nzb_startup_search']} />
+                                            <label class="form-check-label" for="nzb_startup_search">NZB Search on startup</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="search_delay">Search delay</label>
+                                            <input id="search_delay" class="form-control" type="text" name="search_delay" value="${config['search_delay']}" size="4" />mins
+                                            <small>The amount of time to wait between each search request (minimum is 1 min)</small>
+                                        </div>
+                                    </div>
+                                </fieldset>
+	                            <fieldset>
+                                    <legend>Comic Location</legend>
+                                    <div>
+                                        <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>Automatic folder creation happens BENEATH this path</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="destination_dir">Comic Location Path</label>
+                                        <input class="form-control" id="destination_dir" type="text" name="destination_dir" value="${config['destination_dir']}" size="50">
+                                        <small>Where do you store your comics?<br/> (or where do you want me to store them)</small>
+                                        <small>e.g. /Users/name/Comics or /Volumes/share/comics</small>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Permissions</legend>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="enforce_perms" id="enforce_perms" value="1" ${config['enforce_perms']} />
+                                        <label class="form-check-label" for="enforce_perms">Enforce Permissions</label>
+                                    </div>
+                                    <div id="perms_options">
+                                        <div class="form-group">
+                                            <label for="chmod_dir" class="col-form-label">Directory CHMOD</label>
+                                            <input class="form-control" id="chmod_dir" type="text" name="chmod_dir" value="${config['chmod_dir']}" size="50">
+                                            <small>Permissions on created/moved directories</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="chmod_file">File CHMOD</label>
+                                            <input class="form-control" id="chmod_file" type="text" name="chmod_file" value="${config['chmod_file']}" size="50">
+                                            <small>Permissions on created/moved files</small>
+                                        </div>
+                                        %if 'windows' not in mylar.OS_DETECT.lower():
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="chowner">Owner</label>
+                                                <input class="form-control" id="chowner" type="text" name="chowner" value="${config['chowner']}" size="50">
+                                                <small>Set Ownership of files/directories (name OR uid)</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="chgroup">Group</label>
+                                                <input class="form-control" id="chgroup" type="text" name="chgroup" value="${config['chgroup']}" size="50">
+                                                <small>Set Group Ownership of files/directories (name OR gid)</small>
+                                            </div>
+                                        %endif
+                                    </div>
+                                </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="download_settings">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend>Usenet</legend>
+                                        <div class="form-check d-flex flex-row justify-content-between">
+                                            <div class="form-group">
+                                                <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_sabnzbd" value="0" ${config['nzb_downloader_sabnzbd']}>
+                                                <label class="form-check-label" for="nzb_downloader_sabnzbd">Sabnzbd</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_nzbget" value="1" ${config['nzb_downloader_nzbget']}>
+                                                <label class="form-check-label" for="nzb_downloader_nzbget">NZBGet</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_blackhole" value="2" ${config['nzb_downloader_blackhole']}>
+                                                <label class="form-check-label" for="nzb_downloader_blackhole">Black Hole</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset id="sabnzbd_options">
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="sab_host">SABnzbd Host:</label>
+                                            <input class="form-control" type="text" name="sab_host" id="sab_host" value="${config['sab_host']}" size="30">
+                                            <small>usually http://localhost:8080</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="sab_username">SABnzbd Username</label>
+                                            <input class="form-control" type="text" name="sab_username" id="sab_username" value="${config['sab_user']}" size="20">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="sab_password">SABnzbd Password:</label>
+                                            <input class="form-control" type="password" name="sab_password" id="sab_password" value="${config['sab_pass']| h}" size="20">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="populatesab">
+                                                <label class="col-form-label" for="sab_username">SABnzbd API:</label>
+                                                <input class="form-control" type="text" name="sab_apikey" id="sab_apikey" value="${config['sab_api']}" size="28">
+                                        <!--
+                                                        <a href="#" style="float:right" type="button" onclick="doAjaxCall('findsabapi',$(this))" data-success="Successfully retrieved SABnzbd key" data-error="Unable to retrieve SABnzbd key"><span class="ui-icon ui-icon-extlink"></span>GET API</a>
+                                        -->
+                                                <a href="#" class="button btn btn-sm btn-light" type="button" id="find_sabapi" data-success="Sucessfully retrieved SABnzbd API" data-error="Error auto-populating SABnzbd API">
+                                                    <span class="ui-icon ui-icon-extlink"></span>
+                                                    Get API
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="sab_category">SABnzbd Category:</label>
+                                            <input class="form-control" id="sab_category" type="text" name="sab_category" value="${config['sab_cat']}" size="20">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="sab_priority">SAB Priority</label>
+                                            <select class="form-control" id="sab_priority" name="sab_priority">
+                                                %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
+                                                <%
+                                                    if config['sab_priority'] == prio:
+                                                        outputselect = 'selected'
+                                                    else:
+                                                        outputselect = ''
+                                                %>
+                                                <option value=${prio} ${outputselect}>${prio}</option>
+                                                %endfor
+                                            </select>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="sab_to_mylar" type="checkbox" onclick="initConfigCheckbox($(this));" name="sab_to_mylar" value="1" ${config['sab_to_mylar']} />
+                                            <label class="form-check-label" for="sab_to_mylar">Are Mylar / SABnzbd on separate machines</label>
+                                            <small>This is *ONLY* required if Mylar and SABnzbd are on separate machines, otherwise don't touch it</small>
+                                        </div>
+                                        <div id="form_sab_directory" class="form-group">
+                                            <label class="col-form-label" for="sab_directory">SABnzbd Download Directory</label>
+                                            <input class="form-control" id="sab_directory" type="text" name="sab_directory" value="${config['sab_directory']}" size="36" />
+                                            <small>Where your SAB downloads go (required for PP)</small>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="sab_client_post_processing" onclick="initConfigCheckbox($this);" name="sab_client_post_processing" value="1" ${config['sab_client_post_processing']} />
+                                            <label class="form-check-label" for="sab_client_post_processing">Enable Completed Download Handling</label>
+                                            <div id="sabcompletedinfo">
+                                                <div class="row">
+                                                    <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
+                                                           ComicRN script cannot be used with this enabled
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div align="center" class="row">
+                                            <img name="sabnzbd_statusicon" id="sabnzbd_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
+                                            <input type="button" value="Test SABnzbd" id="test_sab" style="float:center" /></br>
+                                            <input type="text" name="sabstatus" style="text-align:center; font-size:11px;" id="sabstatus" size="50" DISABLED />
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="defaults">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tfew">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="msf">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="swgoh">
+                        <div class="configtable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table_wrapper_button">
+                <input type="submit" value="Save changes" id="add" class="btn btn-primary">
+            </div>
+            <p>&nbsp;</p>
+        </div>
+    </form>
+</%def>
+<%def name="javascriptIncludes()">
+<script>
+        function select_toggles(toggle) {
+
+
+        }
+
+        }
+        function authoptions()
+        {
+            var answer = document.getElementById("authentication");
+            if(answer[answer.selectedIndex].value == 2 || answer[answer.selectedIndex].value == 1){
+                document.getElementById("auth_options").style.display = "initial";
+            } else {
+                document.getElementById("auth_options").style.display = "none";
+            }
+        }
+        function show_stats()
+        {
+            var x = document.getElementById("stats");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        </script>
+  <script type="text/javascript">
+    function initThisPage()
+
+    {
+        "use strict";
+
+        %for pair in cformdata['section_toggles']:
+            if ($("#${pair[0]}").is(":checked"))
+            {
+                $("#${pair[1]}").show();
+            }
+            else
+            {
+                $("#${pair[1]}").hide();
+            }
+            $("#${pair[0]}").click(function(){
+                if ($("#${pair[0]}").is(":checked"))
+                {
+                        $("#${pair[1]}").slideDown();
+                }
+                else
+                {
+                        $("#${pair[1]}").slideUp();
+                }
+            });
+        %endfor
+
+
+        $('#generate_api').click(function () {
+            $.get("generateAPI",
+                function (data) {
+                if (data.error != undefined) {
+                    alert(data.error);
+                    return;
+                }
+                $('#api_key').val(data);
+                });
+
+        });
+
+
+        $('#show_Jobs').on('click', function(e) {
+            $.get('show_Jobs', function(data) {
+                bootbox.dialog({
+                    title: 'Jobs Status',
+                    message: '<pre>'+data+'</pre>',
+                    buttons: {
+                        primary: {
+                            label: "Close",
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#stop_Jobs').on('click', function(e) {
+            $.get('stop_Jobs', function(data) {
+                bootbox.dialog({
+                    title: 'Stop Jobs',
+                    message: '<pre>'+data+'</pre>',
+                    buttons: {
+                        primary: {
+                            label: "Close",
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#restart_Jobs').on('click', function(e) {
+            $.get('restart_Jobs', function(data) {
+                bootbox.dialog({
+                    title: 'Restarted Jobs',
+                    message: '<pre>'+data+'</pre>',
+                    buttons: {
+                        primary: {
+                            label: "Close",
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+            });
+        });
+
+
+        // when the page first loads, hide all tab headers and panels
+        $("li[role='presentation']").attr("aria-selected", "false");
+        $("li[role='presentation']").removeClass('active');
+        $("div[role='tabpanel']").attr("aria-hidden", "true");
+        $("div[role='tabpanel']").removeClass('active');
+        // which one do we want to show
+        var tabnum = $("#current_tab").val();
+        var tabid = $("#" + tabnum);
+        var tabpanel = tabid.attr('aria-controls');
+        var tabpanelid = $("#" + tabpanel);
+        // show the tab header and panel we want
+        tabpanelid.attr("aria-hidden", "false");
+        tabpanelid.addClass('active');
+        tabid.attr("aria-selected", "true");
+        tabid.addClass('active');
+        $("div[role='tab-table']").removeClass('hidden');
+
+        // when a tab is clicked
+        $("li[role='presentation']").click(function(){
+            var tabnum = $(this).attr('id');    // store current tab for python
+            $("#current_tab").val(tabnum);
+        });
+
+
+    } // End Init
+
+    $(document).ready(function() {
+        initThisPage();
+    });
+  </script>
+</%def>
