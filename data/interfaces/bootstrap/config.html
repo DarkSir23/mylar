@@ -15,9 +15,6 @@
              mylar.DONATEBUTTON = False
         %>
 
-	<div id="paddingheader">
-		<h1 class="clearfix"><img src="interfaces/default/images/icon_gear.png" alt="settings"/>Settings</h1>
-	</div>
 	<form action="configUpdate" method="post" id="configUpdate">
 	<div id="configtabs" class="card bg-light">
         <div class="card-header">
@@ -33,9 +30,9 @@
         <div class="card-body tab-content">
             <div class="tab-pane fade show active" id="tabs-1">
                 <div class="row display-flex">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <div class="card bg-light">
-                            <div class="card-header">Configuration Options</div>
+                            <h5 class="card-header">Configuration Options</h5>
                             <div class="card-body">
                                 <label><strong>Mylar Version: </strong> ${config['branch']}</br> -- ${config['br_type']}  build ${config['br_version']}.</label></br>
                                 <label><strong>Python Version :</strong> ${config['py_version']}</label></br>
@@ -43,7 +40,7 @@
                             </div>
                         </div>
                         <div class="card bg-light">
-                            <div class="card-header">Mylar Program Options</div>
+                            <h5 class="card-header">Mylar Program Options</h5>
                             <div class="card-body">
                                 <label><strong>Mylar Data Directory :</strong>  ${config['data_dir']}</label></br>
                                 <label><strong>Mylar Program Directory :</strong> ${config['prog_dir']}</label></br>
@@ -52,7 +49,7 @@
                             </div>
                         </div>
                         <div class="card bg-light">
-                            <div class="card-header">Donations</div>
+                            <h5 class="card-header">Donations</h5>
                             <div class="card-body">
                             <div align="center">
                                 <label><strong>Mylar is free to use,</br>
@@ -65,190 +62,94 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
+                            <h5 class="card-header">Bragging Rights</h5>
+                            <div class="card-body">
+                                <label><strong># of Series you're watching: </strong> ${comicinfo['COUNT_COMICS']}</br></label>
+                                <label><strong># of Series you're watching that are continuing: </strong> ${comicinfo['CCONTCOUNT']}</br></label>
+                                <label><strong># of Issues you're watching: </strong> ${comicinfo['COUNT_ISSUES']}</br></label>
+                                <label><strong># of Issues you actually have: </strong> ${comicinfo['COUNT_HAVES']}</br></label>
+                                <label><strong> ... total HD-space being used: </strong> ${comicinfo['COUNT_SIZE']}</br></label>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Useful Information</h5>
+                            <div class="card-body">
+                            <div class="row">
+                                <label><strong>Forums</strong></label>
+                                <div><a href="https://forum.mylarcomics.com/" target="_blank">https://forum.mylarcomics.com</a></div>
+                            </div>
+                            <div class="row">
+                                <label><strong>Source</strong></label>
+                                <div><a href="https://github.com/evilhero/mylar/" target="_blank">https://github.com/evilhero/mylar/</a></div>
+                            </div>
+                            <div class="row">
+                                <label><strong>Issues</strong></label>
+                                <div><a href="https://github.com/evilhero/mylar/issues" target="_blank">https://github.com/evilhero/mylar/issues/</a></div>
+                            </div>
+                            <div class="row">
+                                <label><strong>Internet Relay Chat</strong></label>
+                                <div><a href="irc://irc.freenode.net/#mylar" target="_blank">#mylar on irc.freenode.net</a></div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Branch History</h5>
+                            <div class="card-body">
+                                <div>${config['branch_history']}</div>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Provider Usage (${config['dltotals']}) <a href="#" onclick="show_stats();"><span style="vertical-align:bottom;text-align:center;float:right;">Show Stats</span></a></h5>
+                            <div class="card-body" id="stats" style="display:none">
+                                %for dl in config['dlstats']:
+                                    <%
+                                        dlline = '%s: %s snatches' % (dl[0], dl[1])
+                                        if dl[0] == 'newznab':
+                                            dlline += '<small>  (*erroneous collection data)</small>'
+                                    %>
+                                    ${dlline}</br>
+                                %endfor
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade show active" id="tabs-2">
+            <div class="tab-pane fade" id="tabs-2">
                 <div class="row display-flex">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show active" id="tabs-3">
-                <div class="row display-flex">
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show active" id="tabs-4">
-                <div class="row display-flex">
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show active" id="tabs-5">
-                <div class="row display-flex">
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show active" id="tabs-6">
-                <div class="row display-flex">
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header"></div>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="tabs-12">
-        <table class="configtable" summary="Information">
-            <tr>
-                  <td>
-                   <fieldset>
-                      <legend>Bragging Rights</legend>
-                        <div>
-                           <label><strong># of Series you're watching: </strong> ${comicinfo['COUNT_COMICS']}</br></label>
-			   <label><strong># of Series you're watching that are continuing: </strong> ${comicinfo['CCONTCOUNT']}</br></label>
-                           <label><strong># of Issues you're watching: </strong> ${comicinfo['COUNT_ISSUES']}</br></label>
-                           <label><strong># of Issues you actually have: </strong> ${comicinfo['COUNT_HAVES']}</br></label>
-                           <label><strong> ... total HD-space being used: </strong> ${comicinfo['COUNT_SIZE']}</br></label>
-                        </div>
-                   </fieldset>
-                <fieldset>
-                     <legend>Useful Information</legend>
-                        <div class="row">
-                          <label><strong>Forums</strong></label>
-                            <div><a href="https://forum.mylarcomics.com/" target="_blank">https://forum.mylarcomics.com</a></div>
-                        </div>
-                        <div class="row">
-                          <label><strong>Source</strong></label>
-                            <div><a href="https://github.com/evilhero/mylar/" target="_blank">https://github.com/evilhero/mylar/</a></div>
-                        </div>
-                        <div class="row">
-                          <label><strong>Issues</strong></label>
-                            <div><a href="https://github.com/evilhero/mylar/issues" target="_blank">https://github.com/evilhero/mylar/issues/</a></div>
-                        </div>
-                        <div class="row">
-                          <label><strong>Internet Relay Chat</strong></label>
-                              <div><a href="irc://irc.freenode.net/#mylar" target="_blank">#mylar on irc.freenode.net</a></div>
-                        </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Branch history</legend>
-                        <div>${config['branch_history']}</div>
-                </fieldset>
-                <fieldset>
-                    <div class="row">
-                        <label style="font-size:16px;font-weight:bold;">Provider Usage (${config['dltotals']})</label>
-                        <a href="#" onclick="show_stats();"><span style="vertical-align:bottom;text-align:center;float:right;">Show Stats</span></a>
-                    </div>
-                    <div id="stats" style="display:none">
-                    </br>
-                    %for dl in config['dlstats']:
-                        <%
-                            dlline = '%s: %s snatches' % (dl[0], dl[1])
-                            if dl[0] == 'newznab':
-                                dlline += '<small>  (*erroneous collection data)</small>'
-                        %>
-                        ${dlline}</br>
-                    %endfor
-                    </div>
-                </fieldset>
-               </td>
-            </tr>
-        </table>
-        </div>
-
-	<div id="tabs-2">	
-        <table class="configtable" summary="Web Interface">
-            <tr>
-            	<td>
-            		<fieldset>
-            			<legend>Basic</legend>
-	            		<div class="row">
-	            		 	<label>HTTP Host</label>
-	            		   <input type="text" name="http_host" value="${config['http_host']}" size="30">
-	            		   <small>e.g. localhost or 0.0.0.0</small>
-	            		</div> 
-                                <div class="row">
-                                    <label>HTTP Port</label>
-                                    <input type="text" name="http_port" value="${config['http_port']}" size="10">
-                                <div>
-	            		<div class="row">
-                                    <div class="row checkbox">
-                                        <input type="checkbox" name="enable_https" id="enable_https" value="1" ${config['enable_https']} />
-                                        <label title="Enable HTTPS for web server for encrypted communication">
-                                            Enable HTTPS
-                                        </label>
+                            <h5 class="card-header">Basic</h5>
+                            <div class="card-body">
+                                <div class="form-group">
+	            		 	        <label for="http_host" class="control-label">HTTP Host</label>
+	            		            <input type="text" id="http_host" class="form-control" name="http_host" value="${config['http_host']}"">
+	            		            <small>e.g. localhost or 0.0.0.0</small>
+	            		        </div>
+                                <div class="form-group">
+                                    <label for="http_port" class="control-label">HTTP Port</label>
+                                    <input type="text" id="http_port" class="form-control" name="http_port" value="${config['http_port']}">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="enable_https" id="enable_https" value="1" ${config['enable_https']} />
+                                    <label class="form-check-label" for="enable_https" title="Enable HTTPS for web server for encrypted communication">
+                                        Enable HTTPS
+                                    </label>
+                                </div>
+                                <div id="https_options">
+                                    <div class="form-group">
+                                         <label for="https_cert" class="control-label">HTTPS Cert</label>
+                                         <input class="form-control" id="https_cert" type="text" title="the FULL path to the certificate" name="https_cert" value="${config['https_cert']}" size="30">
                                     </div>
-                                    <div id="https_options">
-                                        <div class="row">
-                                             <label>HTTPS Cert</label>
-                                             <input type="text" title="the FULL path to the certificate" name="https_cert" value="${config['https_cert']}" size="30">
-                                        </div>
-                                        <div class="row">
-                                             <label>HTTPS Key</label>
-                                             <input type="text" title="the FULL path to the key" name="https_key" value="${config['https_key']}" size="30">
-                                        </div>
-                                     </div>
+                                    <div class="form-group">
+                                         <label for="https_key" class="control-label">HTTPS Key</label>
+                                         <input class="form-control" id="https_key" type="text" title="the FULL path to the key" name="https_key" value="${config['https_key']}" size="30">
+                                    </div>
                                  </div>
-                                 <div class="row">
-                                     <label>Authentication</label>
-                                         <select name="authentication" onchange="authoptions()" id="authentication">
+                                 <div class="form-group">
+                                     <label for="authentication" class="control-label">Authentication</label>
+                                         <select class="form-control" name="authentication" onchange="authoptions()" id="authentication">
                                                %for lpe in [0, 1, 2]:
                                                         <%
                                                                 if config['authentication'] == lpe:
@@ -268,317 +169,342 @@
                                          </select>
                                  </div>
                                  <div id="auth_options">
-                                     <div class="row">
-                                         <label>HTTP Username</label>
-                                         <input type="text" name="http_username" value="${config['http_user']}" size="30">
+                                     <div class="form-group">
+                                         <label for="http_username" class="control-label">HTTP Username</label>
+                                         <input type="text" class="form-control" id="http_username" name="http_username" value="${config['http_user']}" size="30">
                                      </div>
-                                     <div class="row">
-                                         <label>HTTP Password</label>
-                                         <input type="password" name="http_password" value="${config['http_pass']| h}" size="30">
+                                     <div class="form-group">
+                                         <label for="http_password" class="control-label">HTTP Password</label>
+                                         <input type="password" class="form-control" id="http_password" name="http_password" value="${config['http_pass']| h}" size="30">
                                      </div>
                                 </div>
-                                 <div class="row checkbox">
-                                    <input type="checkbox" name="launch_browser" value="1" ${config['launch_browser']} /> <label>Launch Browser on Startup</label>
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="launch_browser" name="launch_browser" value="1" ${config['launch_browser']} />
+                                     <label for="launch_browser" class="form-check-label">Launch Browser on Startup</label>
                                  </div>
 
-                                 <div class="row checkbox">
-                                    <input type="checkbox" name="syno_fix" value="1" ${config['syno_fix']} /> <label>Synology Fix</label>
+                                 <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="syno_fix" name="syno_fix" value="1" ${config['syno_fix']} />
+                                     <label for="syno_fix" class="form-check-label">Synology Fix</label>
                                     <br/><small>*Use this if experiencing parsing problems*</small>
                                  </div>
-<!--
-                                 <div class="row checkbox">
-                                    <input type="checkbox" name="auto_update" value="1" ${config['auto_update']} /> <label>Automatic Updates</label>
-                                    <br/><small>Install new updates with no intervention</small>
-                                 </div>
--->
-            		 </fieldset>
-                         <fieldset>
-                             <legend>Annual Handling</legend>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Annual Handling</h5>
+                            <div class="card-body">
                                 <div>
                                     <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>Series need to be Refreshed for annuals to appear</small>
                                 </div>
-                             <div class="row checkbox">
-                                 <input type="checkbox" name="annuals_on" value="1" ${config['annuals_on']} /><label>Enable Series-Annual Integration</label>
+                             <div class="form-check">
+                                 <input type="checkbox" class="form-input-check" id="annuals_on" name="annuals_on" value="1" ${config['annuals_on']} />
+                                 <label class="form-input-label" for="annuals_on">Enable Series-Annual Integration</label>
                              </div>
                                  </br><small>Enabled: Annuals are tracked as part of the series it belongs to</small></br>
                                  <small>Disabled: Annuals are tracked independently and will appear on your watchlist as a series</small>
-                         </fieldset>
-            	</td>
 
-                <td>          
-                         <fieldset>
-                                <legend>API</legend>
-                                <div class="row">
-                                   <label>ComicVine API Key</label>
-                                   <input type="text" name="comicvine_api" value="${config['comicvine_api']}" title="get one for free @ http://api.comicvine.com" size="40">
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">OPDS</h5>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="opds_enable" type="checkbox" name="opds_enable" value="1" ${config['opds_enable']} />
+                                    <label class="form-check-label" for="opds_enable">Enable OPDS</label>
+                                </div>
+                                <div id="opdsoptions">
+                                    <div class="form-check">
+                                        <small>Access the OPDS server at http://mylarhost/opds/ - keep in mind your scheme (http or https), your hostname, port, and any http_root you may have set. </small></br>
+                                        <input class="form-check-input" id="opds_authentication" type="checkbox" name="opds_authentication" value="1" ${config['opds_authentication']} />
+                                        <label class="form-check-label" for="opds_authentication">OPDS Requires Credentials</label>
+                                        <%
+                                             opds_notes = "Require authentication for OPDS.  If checked\nyou will need to provide a username/password.\nThe service user name will work (if set).  Additionally,\nyou can provide a user with only OPDS access below.\nNOTE: If this is not checked, OPDS will be available\nwithout a password."
+                                        %>
+                                        <a href="#" title="${opds_notes}"><img src="interfaces/default/images/info32.png" height="16" alt="" /></a>
+                                        <div id="opdscredentials">
+                                             <div class="form-group">
+                                                 <label for="opds_username" class="control-label">OPDS Username</label>
+                                                 <input id="opds_username" class="form-control" type="text" name="opds_username" value="${config['opds_username']}" size="30">
+                                             </div>
+
+                                             <div class="form-group">
+                                               <label for="opds_password" class="control-input">OPDS Password</label>
+                                               <input id="opds_password" class="form-control" type="password" name="opds_password" value="${config['opds_password']| h}" size="30">
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="opds_metainfo" type="checkbox" name="opds_metainfo" value="1" ${config['opds_metainfo']} />
+                                        <label class="form-check-label" for="opds_metainfo">OPDS Fetch MetaInfo</label>
+                                        </br><small>Warning: Enabling this will slow down issue listing significantly, but will give writer info and book summary</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header">API</h5>
+                            <div class="card-body">
+                                <div class="form-group">
+                                   <label for="comicvine_api" class="control-label">ComicVine API Key</label>
+                                   <input id="comicvine_api" class="form-control" type="text" name="comicvine_api" value="${config['comicvine_api']}" title="get one for free @ http://api.comicvine.com" size="40">
                                    <small>specify your own CV API key here </small>
                                 </div>
 
-                                <div class="row">
-                                    <div class="row checkbox">
-                                        <input id="api_enabled" type="checkbox" name="api_enabled" value="1" ${config['api_enabled']} /><label>Enable API</label>
-                                    </div>
-                                    <div id="apioptions">
-                                       <div class="row">
-                                          <label>Mylar API key</label>
-                                          <input type="text" name="api_key" id="api_key" value="${config['api_key']}" size="20">
-                                          <input type="button" value="Generate" id="generate_api">
-                                          <small>Current API key: <strong>${config['api_key']}</strong></small>
-                                      </div>
-                                    </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="api_enabled" type="checkbox" name="api_enabled" value="1" ${config['api_enabled']} />
+                                    <label class="form-check-label" for="api_enabled">Enable Mylar API</label>
                                 </div>
-                         </fieldset>
-                        <fieldset>
-                                <legend>OPDS</legend>
-                                <div class="row">
-                                    <div class="row_checkbox">
-                                        <input id="opds_enable" type="checkbox" name="opds_enable" value="1" ${config['opds_enable']} /><label>Enable OPDS</label>
-                                    </div>
-                                    <div id="opdsoptions">
-                                        <div class="row_checkbox">
-                                            <small>Access the OPDS server at http://mylarhost/opds/ - keep in mind your scheme (http or https), your hostname, port, and any http_root you may have set. </small></br> 
-                                            <input id="opds_authentication" type="checkbox" name="opds_authentication" value="1" ${config['opds_authentication']} /><label>OPDS Requires Credentials</label>
-                                            <%
-                                                 opds_notes = "Require authentication for OPDS.  If checked\nyou will need to provide a username/password.\nThe service user name will work (if set).  Additionally,\nyou can provide a user with only OPDS access below.\nNOTE: If this is not checked, OPDS will be available\nwithout a password."
-                                            %>
-                                            <a href="#" title="${opds_notes}"><img src="interfaces/default/images/info32.png" height="16" alt="" /></a>
-                                            <div id="opdscredentials">
-                                                 <div class="row">
-                                                     <label>OPDS Username</label>
-                                                     <input type="text" name="opds_username" value="${config['opds_username']}" size="30">
-                                                 </div>
-
-                                                 <div class="row">
-                                                   <label>OPDS Password</label>
-                                                   <input type="password" name="opds_password" value="${config['opds_password']| h}" size="30">
-                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row_checkbox">
-                                            <input id="opds_metainfo" type="checkbox" name="opds_metainfo" value="1" ${config['opds_metainfo']} /><label>OPDS Fetch MetaInfo</label>
-                                            </br><small>Warning: Enabling this will slow down issue listing significantly, but will give writer info and book summary</small>
-                                        </div>
-                                    </div>
+                                <div id="apioptions">
+                                   <div class="form-group">
+                                      <label for="api_key" class="control-label">Mylar API key</label>
+                                      <input type="text" class="form-control" name="api_key" id="api_key" value="${config['api_key']}" size="20">
+                                      <input type="button" value="Generate" id="generate_api">
+                                      <small>Current API key: <strong>${config['api_key']}</strong></small>
+                                  </div>
                                 </div>
-                        </fieldset>
-                        <fieldset>
-                    	<legend>Interval</legend>
-	                    <div class="row">
-	                    	<label>NZB Search Interval</label>
-	                    	<input type="text" name="search_interval" value="${config['search_interval']}" size="4">mins
-                                  <div class="row checkbox">
-                                    <input type="checkbox" name="nzb_startup_search" value="1" ${config['nzb_startup_search']} /><label>NZB Search on startup</label>
-                                  </div>
-                                  <div class="row">
-                                      <label>Search delay</label>
-                                      <input type="text" name="search_delay" value="${config['search_delay']}" size="4" />mins
-                                      <small>The amount of time to wait between each search request (minimum is 1 min)</small>
-                                  </div>
                             </div>
-                         </fieldset>
-	                 <fieldset>
-                               <legend>Comic Location</legend>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Interval</h5>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="search_interval" class="control-label">NZB Search Interval</label>
+                                    <input id="search_interval" class="form-control" type="text" name="search_interval" value="${config['search_interval']}" size="4">mins
+                                    <div class="form-check">
+                                        <input type="checkbox" id="nzb_startup_search" class="form-check-input" name="nzb_startup_search" value="1" ${config['nzb_startup_search']} />
+                                        <label for="nzb_startup_search" class="form-check-label">NZB Search on startup</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="search_delay" class="control-label">Search delay</label>
+                                        <input type="text" class="form-control" id="search_delay" name="search_delay" value="${config['search_delay']}" size="4" />mins
+                                        <small>The amount of time to wait between each search request (minimum is 1 min)</small>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Comic Location</h5>
+                            <div class="card-body">
                                 <div>
                                     <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>Automatic folder creation happens BENEATH this path</small>
                                 </div>
-                                <div class="row">
-                                        <label>Comic Location Path</label>
-                                        <input type="text" name="destination_dir" value="${config['destination_dir']}" size="50">
+                                <div class="form-group">
+                                        <label for="destination_dir" class="control-label">Comic Location Path</label>
+                                        <input type="text" id="destination_dir" class="form-control" name="destination_dir" value="${config['destination_dir']}" size="50">
                                         <small>Where do you store your comics?<br/> (or where do you want me to store them)</small>
                                         <small>e.g. /Users/name/Comics or /Volumes/share/comics</small>
                                 </div>
-                          </fieldset>
-                          <fieldset>
-                                <legend>Permissions</legend>
-                                <div class="row checkbox">
-                                   <input type="checkbox" name="enforce_perms" id="enforce_perms" value="1" ${config['enforce_perms']} /><label>Enforce Permissions</label>
+
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Permissions</h5>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="enforce_perms" id="enforce_perms" value="1" ${config['enforce_perms']} />
+                                    <label for="enforce_perms" class="form-check-label">Enforce Permissions</label>
                                 </div>
                                 <div id="perm_options">
-                                    <div class="row">
-                                        <label>Directory CHMOD</label>
-                                        <input type="text" name="chmod_dir" value="${config['chmod_dir']}" size="50">
+                                    <div class="form-group">
+                                        <label for="chmod_dir" class="control-label">Directory CHMOD</label>
+                                        <input type="text" id="chmod_dir" class="form-control" name="chmod_dir" value="${config['chmod_dir']}" size="50">
                                         <small>Permissions on created/moved directories</small>
                                     </div>
-                                    <div class="row">
-                                        <label>File CHMOD</label>
-                                        <input type="text" name="chmod_file" value="${config['chmod_file']}" size="50">
+                                    <div class="form-group">
+                                        <label for="chmod_file" class="control-label">File CHMOD</label>
+                                        <input type="text" id="chmod_file" class="form-control" name="chmod_file" value="${config['chmod_file']}" size="50">
                                         <small>Permissions on created/moved files</small>
                                     </div>
                                     %if 'windows' not in mylar.OS_DETECT.lower():
-                                        <div class="row">
-                                            <label>Owner</label>
-                                            <input type="text" name="chowner" value="${config['chowner']}" size="50">
+                                        <div class="form-group">
+                                            <label for="chowner" class="control-label">Owner</label>
+                                            <input type="text" id="chowner" class="form-control" name="chowner" value="${config['chowner']}" size="50">
                                             <small>Set Ownership of files/directories (name OR uid)</small>
                                         </div>
-                                        <div class="row">
-                                            <label>Group</label>
-                                            <input type="text" name="chgroup" value="${config['chgroup']}" size="50">
+                                        <div class="form-group">
+                                            <label for="chgroup" class="control-label">Group</label>
+                                            <input type="text" id="chgroup" class="form-control" name="chgroup" value="${config['chgroup']}" size="50">
                                             <small>Set Group Ownership of files/directories (name OR gid)</small>
                                         </div>
-                                    %endif 
+                                    %endif
                                 </div>
-	                </fieldset>
-                </td>
-            </tr>
-        </table>
-	</div>
-	
-	<div id="tabs-3">
-        <table class="configtable" summary="Download Settings">
-	    <tr>
-                <td>
-                       <fieldset>
-                         <legend>Usenet</legend>
-                            <input type="radio" name="nzb_downloader" id="nzb_downloader_sabnzbd" value="0" ${config['nzb_downloader_sabnzbd']}> Sabnzbd&nbsp;&nbsp;<input type="radio" name="nzb_downloader" id="nzb_downloader_nzbget" value="1" ${config['nzb_downloader_nzbget']}> NZBget&nbsp;&nbsp;<input type="radio" name="nzb_downloader" id="nzb_downloader_blackhole" value="2" ${config['nzb_downloader_blackhole']}> Black Hole
-                       </fieldset>
-                       <fieldset id="sabnzbd_options">
-	                	<div class="row">
-		                    <label>SABnzbd Host:</label>
-		                    <input type="text" name="sab_host" id="sab_host" value="${config['sab_host']}" size="30">
-		                    <small>usually http://localhost:8080</small>
-	                        </div>
-	                   	<div class="row">
-		                    <label>SABnzbd Username</label>
-		                    <input type="text" name="sab_username" id="sab_username" value="${config['sab_user']}" size="20">
-    	                        </div>	               
-                                <div class="row">
-                                    <label>SABnzbd Password:</label>
-                                    <input type="password" name="sab_password" id="sab_password" value="${config['sab_pass']| h}" size="20">
-                                </div>
-                                <div class="row">
-                                     <div class="populatesab">
-                                        <label>SABnzbd API:</label>
-                                        <input type="text" name="sab_apikey" id="sab_apikey" value="${config['sab_api']}" size="28">
-<!--
-                                        <a href="#" style="float:right" type="button" onclick="doAjaxCall('findsabapi',$(this))" data-success="Successfully retrieved SABnzbd key" data-error="Unable to retrieve SABnzbd key"><span class="ui-icon ui-icon-extlink"></span>GET API</a>
--->
-                                        <a href="#" style="float:right" type="button" id="find_sabapi" data-success="Sucessfully retrieved SABnzbd API" data-error="Error auto-populating SABnzbd API"><span class="ui-icon ui-icon-extlink"></span>Get API</a>
-                                     </div>
-                                </div>
-
-	                        <div class="row">
-	                        <label>SABnzbd Category:</label>
-	                            <input type="text" name="sab_category" value="${config['sab_cat']}" size="20">
-	                        </div>
-                                <div class="row">
-                                                <label>SAB Priority</label>
-                                            <select name="sab_priority">
-                                               %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
-                                                        <%
-                                                                if config['sab_priority'] == prio:
-                                                                        outputselect = 'selected'
-                                                                else:
-                                                                        outputselect = ''
-                                                        %>
-                                                   <option value=${prio} ${outputselect}>${prio}</option>
-                                                %endfor
-                                                </select>
-                                </div>
-
-                                <div class="row checkbox left clearfix">
-                                    <input id="sab_to_mylar" type="checkbox" onclick="initConfigCheckbox($(this));" name="sab_to_mylar" value="1" ${config['sab_to_mylar']} /><label>Are Mylar / SABnzbd on separate machines</label>
-                                    <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>This is *ONLY* required if Mylar and SABnzbd are on separate machines, otherwise don't touch it</small>
-                                </div>
-                                <div class="config">
-                                    <div class="row">
-                                        <label>SABnzbd Download Directory</label>
-                                        <input type="text" name="sab_directory" value="${config['sab_directory']}" size="36" />
-                                        <small>Where your SAB downloads go (required for PP)</small>
-                                    </div>
-                                </div>
-
-                                <div class="row checkbox left clearfix" id="sab_cdh" style="display:unset;">
-                                    <input type="checkbox" id="sab_client_post_processing" onclick="initConfigCheckbox($this);" name="sab_client_post_processing" value="1" ${config['sab_client_post_processing']} /><label>Enable Completed Download Handling</label>
-                                    <div id="sabcompletedinfo">
-                                       <div class="row">
-                                           <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
-                                           ComicRN script cannot be used with this enabled & required SAB version > 0.8.0</small>
-                                       </div>
-                                    </div>
-                                </div>
-                                <div class="row checkbox left clearfix" id="sab_nocdh" style="display:none;">
-                                    <div>
-                                       <div class="row">
-                                           <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
-                                           Completed Download Handling is not available as your version of SABnzbd is not above 0.8.0</small>
-                                       </div>
-                                    </div>
-                                </div>
-                                <div align="center" class="row">
-                                     <img name="sabnzbd_statusicon" id="sabnzbd_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                     <input type="button" value="Test SABnzbd" id="test_sab" style="float:center" /></br>
-                                     <input type="text" name="sabstatus" style="text-align:center; font-size:11px;" id="sabstatus" size="50" DISABLED />
-                                     <div name="sabversion" id="sabversion" style="font-size:11px;" align="center">
-                                        <%
-                                               if mylar.CONFIG.SAB_VERSION is not None:
-                                                   sabv = 'last tested version: %s' % mylar.CONFIG.SAB_VERSION
-                                               else:
-                                                   sabv = ''
-                                        %>
-                                        <span>${sabv}</span>
-                                     </div>
-                                </div>
-
-                       </fieldset>
-                       <fieldset id="nzbget_options">
-                                <div class="row">
-                                    <label>NZBGet Host:</label>
-                                    <input type="text" id="nzbget_host" name="nzbget_host" value="${config['nzbget_host']}" size="30">
-                                    <small>usually http://localhost</small>
-                                </div>
-                                <div class="row">
-                                    <label>NZBGet Port:</label>
-                                    <input type="text" id="nzbget_port" name="nzbget_port" value="${config['nzbget_port']}" size="36">
-                                </div>
-                                <div class="row">
-                                    <label>NZBGet Username:</label>
-                                    <input type="text" id="nzbget_username" name="nzbget_username" value="${config['nzbget_user']}" size="20">
-                                </div>
-                                <div class="row">
-                                    <label>NZBGet Password:</label>
-                                    <input type="password" id="nzbget_password" name="nzbget_password" value="${config['nzbget_pass']| h}" size="20">
-                               </div>
-                                <div class="row">
-                                    <label>NZBGet Download Directory</label>
-                                    <input type="text" name="nzbget_directory" value="${config['nzbget_directory']}" size="36" />
-                                    <small>Where your NZBGet downloads go... (optional)</small>
-                                </div>
-                            <div class="row">
-                                <label>NZBGet Category:</label>
-                                <input type="text" name="nzbget_category" value="${config['nzbget_cat']}" size="20">
                             </div>
-                                              <div class="row">
-                                                <label>NZBGet Priority</label>
-                                            <select name="nzbget_priority">
-                                %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-3">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header">Usenet</h5>
+                            <div class="card-body">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_sabnzbd" value="0" ${config['nzb_downloader_sabnzbd']}>
+                                    <label for="nzb_downloader_sabnzbd" class="form-check-label">Sabnzbd</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_nzbget" value="1" ${config['nzb_downloader_nzbget']}>
+                                    <label for="nzb_downloader_nzbget" class="form-check-label">NZBget</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="nzb_downloader" id="nzb_downloader_blackhole" value="2" ${config['nzb_downloader_blackhole']}>
+                                    <label for="nzb_downloader_blackhole" class="form-check-label">Black Hole</label>
+                                </div>
+                                <fieldset id="sabnzbd_options">
+                                    <div class="form-group">
+                                        <label for="sab_host" class="control-label">SABnzbd Host:</label>
+                                        <input class="form-control" type="text" name="sab_host" id="sab_host" value="${config['sab_host']}" size="30">
+                                        <small>usually http://localhost:8080</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sab_username" class="control-label>SABnzbd Username</label>
+                                        <input class="form-control" type="text" name="sab_username" id="sab_username" value="${config['sab_user']}" size="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sab_password" class="control-label">SABnzbd Password:</label>
+                                        <input class="form-control" type="password" name="sab_password" id="sab_password" value="${config['sab_pass']| h}" size="20">
+                                    </div>
+                                    <div class="form-group">
+                                         <div class="populatesab">
+                                            <label for="sab_apikey" class="control-label">SABnzbd API:</label>
+                                            <input class="form-control" type="text" name="sab_apikey" id="sab_apikey" value="${config['sab_api']}" size="28">
+    <!--
+                                            <a href="#" style="float:right" type="button" onclick="doAjaxCall('findsabapi',$(this))" data-success="Successfully retrieved SABnzbd key" data-error="Unable to retrieve SABnzbd key"><span class="ui-icon ui-icon-extlink"></span>GET API</a>
+    -->
+                                            <span class="input-group-button">
+                                                <button class="btn btn-default" type="button" id="find_sabapi" data-success="Sucessfully retrieved SABnzbd API" data-error="Error auto-populating SABnzbd API"><span class="ui-icon ui-icon-extlink"></span>Get API</button>
+                                            </span>
+                                         </div>
+                                    </div>
+
+                                <div class="form-group">
+                                    <label for="sab_category" class="control-label">SABnzbd Category:</label>
+                                    <input id="sab_category" class="form-control" type="text" name="sab_category" value="${config['sab_cat']}" size="20">
+                                </div>
+                                    <div class="form-group">
+                                        <label for="sab_priority" class="control-label">SAB Priority</label>
+                                                <select id="sab_priority" class="form-control" name="sab_priority">
+                                                   %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
+                                                            <%
+                                                                    if config['sab_priority'] == prio:
+                                                                            outputselect = 'selected'
+                                                                    else:
+                                                                            outputselect = ''
+                                                            %>
+                                                       <option value=${prio} ${outputselect}>${prio}</option>
+                                                    %endfor
+                                                    </select>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="sab_to_mylar" type="checkbox" onclick="initConfigCheckbox($(this));" name="sab_to_mylar" value="1" ${config['sab_to_mylar']} />
+                                        <label for="sab_to_mylar" class="form-check-label">Are Mylar / SABnzbd on separate machines</label>
+                                        <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>This is *ONLY* required if Mylar and SABnzbd are on separate machines, otherwise don't touch it</small>
+                                    </div>
+                                    <div class="config">
+                                        <div class="form-group">
+                                            <label for="sab_directory" class="control-label">SABnzbd Download Directory</label>
+                                            <input id="sab_directory" class="form-control" type="text" name="sab_directory" value="${config['sab_directory']}" size="36" />
+                                            <small>Where your SAB downloads go (required for PP)</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check" id="sab_cdh" style="display:unset;">
+                                        <input type="checkbox" class="form-check-input" id="sab_client_post_processing" onclick="initConfigCheckbox($this);" name="sab_client_post_processing" value="1" ${config['sab_client_post_processing']} />
+                                        <label for="sab_client_post_processing" class="form-check-label">Enable Completed Download Handling</label>
+                                        <div id="sabcompletedinfo">
+                                           <div class="row">
+                                               <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
+                                               ComicRN script cannot be used with this enabled & required SAB version > 0.8.0</small>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="row checkbox left clearfix" id="sab_nocdh" style="display:none;">
+                                        <div>
+                                           <div class="row">
+                                               <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
+                                               Completed Download Handling is not available as your version of SABnzbd is not above 0.8.0</small>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div align="center" class="form-group">
+                                         <img name="sabnzbd_statusicon" id="sabnzbd_statusicon" src="interfaces/default/images/success.png" style="float:right;visibility:hidden;" height="20" width="20" />
+                                         <input type="button" value="Test SABnzbd" id="test_sab" style="float:center" /></br>
+                                         <input type="text" name="sabstatus" style="text-align:center; font-size:11px;" id="sabstatus" size="50" DISABLED />
+                                         <div name="sabversion" id="sabversion" style="font-size:11px;" align="center">
+                                            <%
+                                                   if mylar.CONFIG.SAB_VERSION is not None:
+                                                       sabv = 'last tested version: %s' % mylar.CONFIG.SAB_VERSION
+                                                   else:
+                                                       sabv = ''
+                                            %>
+                                            <span>${sabv}</span>
+                                         </div>
+                                    </div>
+
+                                </fieldset>
+                                <fieldset id="nzbget_options">
+                                    <div class="row">
+                                        <label>NZBGet Host:</label>
+                                        <input type="text" id="nzbget_host" name="nzbget_host" value="${config['nzbget_host']}" size="30">
+                                        <small>usually http://localhost</small>
+                                    </div>
+                                    <div class="row">
+                                        <label>NZBGet Port:</label>
+                                        <input type="text" id="nzbget_port" name="nzbget_port" value="${config['nzbget_port']}" size="36">
+                                    </div>
+                                    <div class="row">
+                                        <label>NZBGet Username:</label>
+                                        <input type="text" id="nzbget_username" name="nzbget_username" value="${config['nzbget_user']}" size="20">
+                                    </div>
+                                    <div class="row">
+                                        <label>NZBGet Password:</label>
+                                        <input type="password" id="nzbget_password" name="nzbget_password" value="${config['nzbget_pass']| h}" size="20">
+                                   </div>
+                                    <div class="row">
+                                        <label>NZBGet Download Directory</label>
+                                        <input type="text" name="nzbget_directory" value="${config['nzbget_directory']}" size="36" />
+                                        <small>Where your NZBGet downloads go... (optional)</small>
+                                    </div>
+                                    <div class="row">
+                                        <label>NZBGet Category:</label>
+                                        <input type="text" name="nzbget_category" value="${config['nzbget_cat']}" size="20">
+                                    </div>
+                                    <div class="row">
+                                        <label>NZBGet Priority</label>
+                                        <select name="nzbget_priority">
+                                            %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
                                                         <%
                                                                 if config['nzbget_priority'] == prio:
                                                                         outputselect = 'selected'
                                                                 else:
                                                                         outputselect = ''
                                                         %>
-                                     <option value=${prio} ${outputselect}>${prio}</option>
-                                                %endfor
-                                                </select>
-                                              </div>
+                                                <option value=${prio} ${outputselect}>${prio}</option>
+                                            %endfor
+                                        </select>
+                                    </div>
+                                    <div class="row checkbox left clearfix">
+                                        <input type="checkbox" id="nzbget_client_post_processing" onclick="initConfigCheckbox($this);" name="nzbget_client_post_processing" value="1" ${config['nzbget_client_post_processing']} />
+                                        <label>Enable Completed Download Handling</label>
+                                        <div id="nzbgetcompletedinfo">
+                                            <div class="row">
+                                               <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
+                                               ComicRN script cannot be used with this enabled</small>
+                                           </div>
+                                        </div>
+                                    </div>
 
-                            <div class="row checkbox left clearfix">
-                                <input type="checkbox" id="nzbget_client_post_processing" onclick="initConfigCheckbox($this);" name="nzbget_client_post_processing" value="1" ${config['nzbget_client_post_processing']} /><label>Enable Completed Download Handling</label>
-                                <div id="nzbgetcompletedinfo">
-                                   <div class="row">
-                                       <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
-                                       ComicRN script cannot be used with this enabled</small>
-                                   </div>
-                                </div>
-                            </div>
-
-                            <div align="center" class="row">
-                                 <img name="nzbget_statusicon" id="nzbget_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                 <input type="button" value="Test NZBGet" id="test_nzbget" style="float:center" /></br>
-                                 <input type="text" name="nzbgetstatus" style="text-align:center; font-size:11px;" id="nzbgetstatus" size="50" DISABLED />
-                            </div>
-                         
-                         </fieldset>
+                                    <div align="center" class="row">
+                                         <img name="nzbget_statusicon" id="nzbget_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
+                                         <input type="button" value="Test NZBGet" id="test_nzbget" style="float:center" /></br>
+                                         <input type="text" name="nzbgetstatus" style="text-align:center; font-size:11px;" id="nzbgetstatus" size="50" DISABLED />
+                                    </div>
+                                 </fieldset>
                          <fieldset id="blackhole_options">
                                     <div class="row">
                                         <label>Black Hole Directory</label>
@@ -586,14 +512,81 @@
                                         <small>Folder your Download program watches for NZBs</small>
                                     </div>
                           </fieldset>
-                          <fieldset id="general_nzb_options">           
+                          <fieldset id="general_nzb_options">
                             <div class="checkbox row">
                                 <label>Usenet Retention (in days)</label>
                                 <input type="text" name="usenet_retention" value="${config['usenet_retention']}" size="10">
                             </div>
                          </fieldset>
 
-                   </td>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header">Torrents</h5>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-4">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-5">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-6">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+	<div id="tabs-3">
+        <table class="configtable" summary="Download Settings">
+	    <tr>
                    <td>
                       <legend>Torrents</legend>
 			<fieldset>
@@ -1638,7 +1631,7 @@
 	function initThisPage() 
 	
 	{
-
+                authoptions();
                 if ($("#api_enabled").is(":checked"))
                         {
                                 $("#apioptions").show();
