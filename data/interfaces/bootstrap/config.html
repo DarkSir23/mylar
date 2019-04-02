@@ -361,7 +361,7 @@
                                         <small>usually http://localhost:8080</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="sab_username" class="control-label>SABnzbd Username</label>
+                                        <label for="sab_username" class="control-label">SABnzbd Username</label>
                                         <input class="form-control" type="text" name="sab_username" id="sab_username" value="${config['sab_user']}" size="20">
                                     </div>
                                     <div class="form-group">
@@ -433,8 +433,8 @@
                                     </div>
                                     <div align="center" class="form-group">
                                          <img name="sabnzbd_statusicon" id="sabnzbd_statusicon" src="interfaces/default/images/success.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                         <input type="button" value="Test SABnzbd" id="test_sab" style="float:center" /></br>
-                                         <input type="text" name="sabstatus" style="text-align:center; font-size:11px;" id="sabstatus" size="50" DISABLED />
+                                         <input class="form-control" type="button" value="Test SABnzbd" id="test_sab" style="float:center" /></br>
+                                         <input class="form-control" type="text" name="sabstatus" style="text-align:center; font-size:11px;" id="sabstatus" size="50" DISABLED />
                                          <div name="sabversion" id="sabversion" style="font-size:11px;" align="center">
                                             <%
                                                    if mylar.CONFIG.SAB_VERSION is not None:
@@ -448,35 +448,35 @@
 
                                 </fieldset>
                                 <fieldset id="nzbget_options">
-                                    <div class="row">
-                                        <label>NZBGet Host:</label>
-                                        <input type="text" id="nzbget_host" name="nzbget_host" value="${config['nzbget_host']}" size="30">
+                                    <div class="form-group">
+                                        <label for="nzbget_host" class="control-label">NZBGet Host:</label>
+                                        <input type="text" class="form-control" id="nzbget_host" name="nzbget_host" value="${config['nzbget_host']}">
                                         <small>usually http://localhost</small>
                                     </div>
-                                    <div class="row">
-                                        <label>NZBGet Port:</label>
-                                        <input type="text" id="nzbget_port" name="nzbget_port" value="${config['nzbget_port']}" size="36">
+                                    <div class="form-group">
+                                        <label for="nzbget_port" class="control-label">NZBGet Port:</label>
+                                        <input type="text" class="form-control" id="nzbget_port" name="nzbget_port" value="${config['nzbget_port']}" size="36">
                                     </div>
-                                    <div class="row">
-                                        <label>NZBGet Username:</label>
-                                        <input type="text" id="nzbget_username" name="nzbget_username" value="${config['nzbget_user']}" size="20">
+                                    <div class="form-group">
+                                        <label for="nzbget_username" class="control-label">NZBGet Username:</label>
+                                        <input type="text" class="form-control" id="nzbget_username" name="nzbget_username" value="${config['nzbget_user']}" size="20">
                                     </div>
-                                    <div class="row">
-                                        <label>NZBGet Password:</label>
+                                    <div class="form-group">
+                                        <label for="nzbget_password" class="control-label">NZBGet Password:</label>
                                         <input type="password" id="nzbget_password" name="nzbget_password" value="${config['nzbget_pass']| h}" size="20">
                                    </div>
-                                    <div class="row">
-                                        <label>NZBGet Download Directory</label>
-                                        <input type="text" name="nzbget_directory" value="${config['nzbget_directory']}" size="36" />
+                                    <div class="form-group">
+                                        <label for="nzbget_directory" class="control_label">NZBGet Download Directory</label>
+                                        <input type="text" class="form-control" id="nzbget_directory" name="nzbget_directory" value="${config['nzbget_directory']}" size="36" />
                                         <small>Where your NZBGet downloads go... (optional)</small>
                                     </div>
-                                    <div class="row">
-                                        <label>NZBGet Category:</label>
-                                        <input type="text" name="nzbget_category" value="${config['nzbget_cat']}" size="20">
+                                    <div class="form-group">
+                                        <label for="nzbget_category" class="control-label">NZBGet Category:</label>
+                                        <input type="text" class="form-control" id="nzbget_category" name="nzbget_category" value="${config['nzbget_cat']}" size="20">
                                     </div>
-                                    <div class="row">
-                                        <label>NZBGet Priority</label>
-                                        <select name="nzbget_priority">
+                                    <div class="form-group">
+                                        <label for="nzbget_priority" class="control_label">NZBGet Priority</label>
+                                        <select class="form-control" id="nzbget_priority" name="nzbget_priority">
                                             %for prio in ['Default', 'Low', 'Normal', 'High', 'Paused']:
                                                         <%
                                                                 if config['nzbget_priority'] == prio:
@@ -488,9 +488,9 @@
                                             %endfor
                                         </select>
                                     </div>
-                                    <div class="row checkbox left clearfix">
-                                        <input type="checkbox" id="nzbget_client_post_processing" onclick="initConfigCheckbox($this);" name="nzbget_client_post_processing" value="1" ${config['nzbget_client_post_processing']} />
-                                        <label>Enable Completed Download Handling</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="nzbget_client_post_processing" onclick="initConfigCheckbox($this);" name="nzbget_client_post_processing" value="1" ${config['nzbget_client_post_processing']} />
+                                        <label for="nzbget_client_post_processing" class="form-check-label">Enable Completed Download Handling</label>
                                         <div id="nzbgetcompletedinfo">
                                             <div class="row">
                                                <small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>
@@ -499,23 +499,23 @@
                                         </div>
                                     </div>
 
-                                    <div align="center" class="row">
+                                    <div align="center" class="form-group">
                                          <img name="nzbget_statusicon" id="nzbget_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                         <input type="button" value="Test NZBGet" id="test_nzbget" style="float:center" /></br>
-                                         <input type="text" name="nzbgetstatus" style="text-align:center; font-size:11px;" id="nzbgetstatus" size="50" DISABLED />
+                                         <input class="form-control" type="button" value="Test NZBGet" id="test_nzbget" style="float:center" /></br>
+                                         <input class="form-control" type="text" name="nzbgetstatus" style="text-align:center; font-size:11px;" id="nzbgetstatus" DISABLED />
                                     </div>
                                  </fieldset>
                          <fieldset id="blackhole_options">
-                                    <div class="row">
-                                        <label>Black Hole Directory</label>
-                                            <input type="text" name="blackhole_dir" value="${config['blackhole_dir']}" size="30">
+                                    <div class="form-group">
+                                        <label for="blackhole_dir" class="control-label">Black Hole Directory</label>
+                                            <input type="text" class="form-control" id="blackhole_dir" name="blackhole_dir" value="${config['blackhole_dir']}" size="30">
                                         <small>Folder your Download program watches for NZBs</small>
                                     </div>
                           </fieldset>
                           <fieldset id="general_nzb_options">
-                            <div class="checkbox row">
-                                <label>Usenet Retention (in days)</label>
-                                <input type="text" name="usenet_retention" value="${config['usenet_retention']}" size="10">
+                            <div class="form-group">
+                                <label for="usenet_retention" id="control-label">Usenet Retention (in days)</label>
+                                <input type="text" class="form-control" id="usenet_retention" name="usenet_retention" value="${config['usenet_retention']}" size="10">
                             </div>
                          </fieldset>
 
@@ -526,7 +526,236 @@
                         <div class="card bg-light">
                             <h5 class="card-header">Torrents</h5>
                             <div class="card-body">
-
+                                <div class="form-check">
+                                    <input class="form-check-control" id="enable_torrents" type="checkbox" onclick="initConfigCheckbox($(this));" name="enable_torrents" value=1 ${config['enable_torrents']} />
+                                    <label for="enable_torrents"class="form-check-label">Use Torrents</label>
+                                </div>
+                                <div class="config">
+                                   <div class="form-group">
+                                       <label for="minseeds" class="control-label">Minimum # of seeders</label>
+                                       <input type="text" class="form-control" id="minseeds" name="minseeds" value="${config['minseeds']}" size="10">
+                                   </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_watchlist" value="0" ${config['torrent_downloader_watchlist']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">Watchdir</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_utorrent" value="1" ${config['torrent_downloader_utorrent']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">uTorrent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_rtorrent" value="2" ${config['torrent_downloader_rtorrent']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">rTorrent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_transmission" value="3" ${config['torrent_downloader_transmission']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">Transmission</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_deluge" value="4" ${config['torrent_downloader_deluge']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">Deluge</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="torrent_downloader" id="torrent_downloader_qbittorrent" value="5" ${config['torrent_downloader_qbittorrent']}>
+                                        <label for="nzb_downloader_sabnzbd" class="form-check-label">qBittorrent</label>
+                                    </div>
+                        			<fieldset id="watchlist_options">
+                                        <div class="row checkbox left clearfix">
+                                            <input id="local_watchdir" type="checkbox" name="torrent_local" value="1" ${config['torrent_local']} /><label>Local Watch dir</label>
+                                        </div>
+                                        <div id="watchdir_local_options">
+                                            <div class="row">
+					                            <label>Watch Directory</label>
+                                                <input type="text" name="local_watchdir" value="${config['local_watchdir']}" size="30"><br/>
+                                                <small>Local Folder your torrent client watches</small>
+                                            </div>
+                                        </div>
+                                        <div class="row checkbox left clearfix">
+                                            <input id="remote_watchdir" type="checkbox" name="torrent_seedbox" value="1" ${config['torrent_seedbox']} /><label>Remote Watch dir</label>
+                                        </div>
+                                        <div id="watchdir_remote_options">
+                                            <div class="row">
+                                                <label>Seedbox Host</label>
+                                                <input type="text" name="seedbox_host" value="${config['seedbox_host']}" size="30">
+                                            </div>
+                                            <div class="row">
+                                                <label>Seedbox Port (SFTP)</label>
+                                                <input type="text" name="seedbox_port" value="${config['seedbox_port']}" size="30">
+                                            </div>
+                                            <div class="row">
+                                                <label>Seedbox Username</label>
+                                                <input type="text" name="seedbox_user" value="${config['seedbox_user']}" size="30">
+                                            </div>
+                                            <div class="row">
+                                                <label>Seedbox Password</label>
+                                                <input type="password" name="seedbox_pass" value="${config['seedbox_pass']| h}" size="30">
+                                            </div>
+                                            <div class="row">
+                                                <label>Watch Directory</label>
+                                                <input type="text" name="seedbox_watchdir" value="${config['seedbox_watchdir']}" size="30"><br/>
+                                                <small>Folder path your torrent seedbox client watches</small>
+                                            </div>
+                                        </div>
+			                        </fieldset>
+                                    <fieldset id="utorrent_options">
+                                        <div class="row">
+                                            <label>uTorrent Host</label>
+                                            <input type="text" name="utorrent_host" value="${config['utorrent_host']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>uTorrent Username</label>
+                                            <input type="text" name="utorrent_username" value="${config['utorrent_username']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>uTorrent Password</label>
+                                            <input type="password" name="utorrent_password" value="${config['utorrent_password']| h}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>uTorrent Label</label>
+                                            <input type="text" name="utorrent_label" value="${config['utorrent_label']}" size="30"><br/>
+                                            <small>Label for your uTorrent downloads</small>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset id="rtorrent_options">
+                                        <div class="row">
+                                                <label>rTorrent Host:port(optional)</label>
+                                                <input type="text" id="rtorrent_host" name="rtorrent_host" value="${config['rtorrent_host']}" size="30">
+                            <small>ie. https://my.rtorrent, http://192.168.1.1, http://localhost:80, scgi://localhost:5000</small>
+                                        </div>
+                                        <div class="config">
+                                            <div class="row checkbox left clearfix">
+                                                <input id="rtorrent_verify" type="checkbox" name="rtorrent_verify" value="1" ${config['rtorrent_verify']} /><label>Verify SSL</label>
+                                                <small>(only optionally used for https connections)</small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label>rTorrent Authentication</label>
+                                            <select name="rtorrent_authentication" id="rtorrent_authentication">
+                                            %for x in ['basic', 'digest']:
+                                                <%
+                                                    if config['rtorrent_authentication'] == x:
+                                                        outputselect = 'selected'
+                                                    else:
+                                                        outputselect = ''
+                                                 %>
+                                            <option value=${x} ${outputselect}>${x}</option>
+                                            %endfor
+                                            </select>
+                                        </div>
+                                        <div class="row">
+                                            <label>rTorrent RPC</label>
+                                            <input type="text" id="rtorrent_rpc_url" name="rtorrent_rpc_url" value="${config['rtorrent_rpc_url']}" size="30">
+                                            <small>ie. httprpc plugin = rutorrent/plugins/httprpc/action.php<br>rpc plugin = user/RPC2</small>
+                                        </div>
+                                        <div class="row">
+                                            <label>rTorrent Username</label>
+                                            <input type="text" id="rtorrent_username" name="rtorrent_username" value="${config['rtorrent_username']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>rTorrent Password</label>
+                                            <input type="password" id="rtorrent_password" name="rtorrent_password" value="${config['rtorrent_password']| h}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>rTorrent Directory</label>
+                                            <input type="text" name="rtorrent_directory" value="${config['rtorrent_directory']}" size="30"><br/>
+                                            <small>Folder path where torrent download will be assigned</small>
+                                        </div>
+                                        <div class="row">
+                                            <label>Label</label>
+                                            <input type="text" name="rtorrent_label" value="${config['rtorrent_label']}" size="30"><br/>
+                                            <small>Label to assign for torrents</small>
+                                        </div>
+                                        <div class="row checkbox left clearfix">
+                                            <input id="rtorrent_startonload" type="checkbox" name="rtorrent_startonload" value="1" ${config['rtorrent_startonload']} /><label>Start Torrent on Successful Load</label>
+                                            <small>Automatically start torrent on successful loading within rtorrent client</small>
+                                        </div>
+                                        <div class="row">
+                                            <img name="rtorrent_statusicon" id="rtorrent_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
+                                            <input type="button" value="Test Connection" id="rtorrent_test" />
+                                        </div>
+                                    </fieldset>
+                                    <fieldset id="transmission_options">
+                                        <div class="row">
+                                            <label>Transmission Host</label>
+                                            <input type="text" name="transmission_host" value="${config['transmission_host']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>Transmission Username</label>
+                                            <input type="text" name="transmission_username" value="${config['transmission_username']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>Transmission Password</label>
+                                            <input type="password" name="transmission_password" value="${config['transmission_password']| h}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>Transmission Directory</label>
+                                            <input type="text" name="transmission_directory" value="${config['transmission_directory']}" size="30"><br/>
+                                            <small>Folder path where torrent download will be assigned</small>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset id="deluge_options">
+                                        <div class="row">
+                                            <label>Deluge Host:Port </label>
+                                            <input type="text" name="deluge_host" value="${config['deluge_host']}" size="30">
+                                            <small>(ie. 192.168.1.2:58846) port uses the deluge daemon port (remote connection to daemon has to be enabled)</small>
+                                        </div>
+                                        <div class="row">
+                                            <label>Deluge Username</label>
+                                            <input type="text" name="deluge_username" value="${config['deluge_username']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>Deluge Password</label>
+                                            <input type="password" name="deluge_password" value="${config['deluge_password']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>Deluge Label</label>
+                                            <input type="text" name="deluge_label" value="${config['deluge_label']}" size="30"><br/>
+                                            <small>Label to be used on the torrents</small>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset id="qbittorrent_options">
+                                        <div class="row">
+                                            <label>qBittorrent Host:Port </label>
+                                            <input type="text" name="qbittorrent_host" id="qbittorrent_host" value="${config['qbittorrent_host']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>qBittorrent Username</label>
+                                            <input type="text" name="qbittorrent_username" id="qbittorrent_username" value="${config['qbittorrent_username']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>qBittorrent Password</label>
+                                            <input type="password" name="qbittorrent_password" id="qbittorrent_password" value="${config['qbittorrent_password']}" size="30">
+                                        </div>
+                                        <div class="row">
+                                            <label>qBittorrent Label</label>
+                                            <input type="text" name="qbittorrent_label" value="${config['qbittorrent_label']}" size="30"><br/>
+                                            <small>Label to be used on the torrents</small>
+                                        </div>
+                                        <div class="row">
+                                            <label>qBittorrent Folder</label>
+                                            <input type="text" name="qbittorrent_folder" value="${config['qbittorrent_folder']}" size="30"><br/>
+                                            <small>Folder path where torrents will be assigned to</small>
+                                        </div>
+                                        <div class="row">
+                                            <label>Add torrent action:</label>
+                                            <select name="qbittorrent_loadaction">
+                                            %for x in ['default', 'force_start', 'pause']:
+                                                   <%
+                                                          if config['qbittorrent_loadaction'] == x:
+                                                              outputselect = 'selected'
+                                                          else:
+                                                              outputselect = ''
+                                                    %>
+                                                    <option value=${x} ${outputselect}>${x}</option>
+                                            %endfor
+                                            </select>
+                                        </div>
+                                        <div class="row">
+                                            <img name="qbittorrent_statusicon" id="qbittorrent_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
+                                            <input type="button" value="Test Connection" id="qbittorrent_test" />
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -537,295 +766,23 @@
                     <div class="col-lg-6">
                         <div class="card bg-light">
                             <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card bg-light">
-                            <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tabs-5">
-                <div class="row display-flex">
-                    <div class="col-lg-6">
-                        <div class="card bg-light">
-                            <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card bg-light">
-                            <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tabs-6">
-                <div class="row display-flex">
-                    <div class="col-lg-6">
-                        <div class="card bg-light">
-                            <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card bg-light">
-                            <h5 class="card-header"></h5>
-                            <div class="card-body"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-	<div id="tabs-3">
-        <table class="configtable" summary="Download Settings">
-	    <tr>
-                   <td>
-                      <legend>Torrents</legend>
-			<fieldset>
-				<div class="row checkbox">
-					<input id="enable_torrents" type="checkbox" onclick="initConfigCheckbox($(this));" name="enable_torrents" value=1 ${config['enable_torrents']} /><label>Use Torrents</label>
-				</div>
-				<div class="config">
-                                       <div class="row">
-                                           <label>Minimum # of seeders</label>
-                                           <input type="text" name="minseeds" value="${config['minseeds']}" size="10">
-                                       </div>
-                                          <center>
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_watchlist" value="0" ${config['torrent_downloader_watchlist']}> Watchdir&nbsp;&nbsp;
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_utorrent" value="1" ${config['torrent_downloader_utorrent']}> uTorrent&nbsp;&nbsp;
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_rtorrent" value="2" ${config['torrent_downloader_rtorrent']}> rTorrent</br>
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_transmission" value="3" ${config['torrent_downloader_transmission']}> Transmission&nbsp;&nbsp;
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_deluge" value="4" ${config['torrent_downloader_deluge']}> Deluge&nbsp;&nbsp;
-                                            <input type="radio" name="torrent_downloader" id="torrent_downloader_qbittorrent" value="5" ${config['torrent_downloader_qbittorrent']}> qBittorrent
-                                          </center>
-                                
-			<fieldset id="watchlist_options">
-                                <div class="row checkbox left clearfix">
-                                        <input id="local_watchdir" type="checkbox" name="torrent_local" value="1" ${config['torrent_local']} /><label>Local Watch dir</label>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="enable_rss" type="checkbox" onclick="initConfigCheckbox($(this));" name="enable_rss" value=1 ${config['enable_rss']} />
+                                    <label for="enable_rss" class="form-check-label">Enable RSS Feed Searches (nzbs & torrents)</label>
                                 </div>
-				  <div id="watchdir_local_options">
-                                    <div class="row">
-					<label>Watch Directory</label>
-					<input type="text" name="local_watchdir" value="${config['local_watchdir']}" size="30"><br/>
-					<small>Local Folder your torrent client watches</small>
-                                    </div>
-  				  </div>
-                                <div class="row checkbox left clearfix">
-                                        <input id="remote_watchdir" type="checkbox" name="torrent_seedbox" value="1" ${config['torrent_seedbox']} /><label>Remote Watch dir</label>
-                                </div>
-                                <div id="watchdir_remote_options">
-                                  <div class="row">
-                                        <label>Seedbox Host</label>
-                                        <input type="text" name="seedbox_host" value="${config['seedbox_host']}" size="30">
-                                  </div>
-                                  <div class="row">
-                                        <label>Seedbox Port (SFTP)</label>
-                                        <input type="text" name="seedbox_port" value="${config['seedbox_port']}" size="30">
-                                  </div>
-                                  <div class="row">
-                                        <label>Seedbox Username</label>
-                                        <input type="text" name="seedbox_user" value="${config['seedbox_user']}" size="30">
-                                  </div>
-                                  <div class="row">
-                                        <label>Seedbox Password</label>
-                                        <input type="password" name="seedbox_pass" value="${config['seedbox_pass']| h}" size="30">
-                                  </div>
-                                  <div class="row">
-                                        <label>Watch Directory</label>
-                                        <input type="text" name="seedbox_watchdir" value="${config['seedbox_watchdir']}" size="30"><br/>
-                                        <small>Folder path your torrent seedbox client watches</small>
-                                  </div>
-			</fieldset>
-			<fieldset id="utorrent_options">
-				<div class="row">
-					<label>uTorrent Host</label>
-					<input type="text" name="utorrent_host" value="${config['utorrent_host']}" size="30">
-				</div>
-				<div class="row">
-					<label>uTorrent Username</label>
-					<input type="text" name="utorrent_username" value="${config['utorrent_username']}" size="30">
-				</div>
-				<div class="row">
-					<label>uTorrent Password</label>
-					<input type="password" name="utorrent_password" value="${config['utorrent_password']| h}" size="30">
-				</div>
-				<div class="row">
-					<label>uTorrent Label</label>
-					<input type="text" name="utorrent_label" value="${config['utorrent_label']}" size="30"><br/>
-					<small>Label for your uTorrent downloads</small>
-				</div>
-			</fieldset>
-                        <fieldset id="rtorrent_options">
-                                <div class="row">
-                                        <label>rTorrent Host:port(optional)</label>
-                                        <input type="text" id="rtorrent_host" name="rtorrent_host" value="${config['rtorrent_host']}" size="30">
-					<small>ie. https://my.rtorrent, http://192.168.1.1, http://localhost:80, scgi://localhost:5000</small>
-                                </div>
-                                <div class="config">
-                                    <div class="row checkbox left clearfix">
-                                        <input id="rtorrent_verify" type="checkbox" name="rtorrent_verify" value="1" ${config['rtorrent_verify']} /><label>Verify SSL</label>
-                                        <small>(only optionally used for https connections)</small>
+                                <div class="config form-group">
+                                    <label for="rss_checkinterval" class="control-label">RSS Interval Feed Check</label>
+                                    <div class="input-group">
+                                        <input type="text" id="rss_checkinterval" class="form-control" name="rss_checkinterval" value="${config['rss_checkinterval']}" size="6" />
+                                        <div class="input-group-append">(Mins)</div>
+                                        <a href="#" type="button" class="btn btn-default" onclick="doAjaxCall('force_rss',$(this))" data-success="RSS Force now running" data-error="Error trying to retrieve RSS Feeds"><span class="ui-icon ui-icon-extlink"></span>Force RSS</a>
+                                        </br><small>last run: ${config['rss_last']}</small>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <label>rTorrent Authentication</label>
-                                    <select name="rtorrent_authentication" id="rtorrent_authentication">
-                                    %for x in ['basic', 'digest']:
-                                        <%
-                                            if config['rtorrent_authentication'] == x:
-                                                outputselect = 'selected'
-                                            else:
-                                                outputselect = ''
-                                         %>
-                                    <option value=${x} ${outputselect}>${x}</option>
-                                    %endfor
-                                    </select>
-                                </div>
-                                <div class="row">
-                                        <label>rTorrent RPC</label>
-                                        <input type="text" id="rtorrent_rpc_url" name="rtorrent_rpc_url" value="${config['rtorrent_rpc_url']}" size="30">
-					<small>ie. httprpc plugin = rutorrent/plugins/httprpc/action.php<br>rpc plugin = user/RPC2</small>
-                                </div>
-                                <div class="row">
-                                        <label>rTorrent Username</label>
-                                        <input type="text" id="rtorrent_username" name="rtorrent_username" value="${config['rtorrent_username']}" size="30">
-                                </div>
-                                <div class="row">
-                                        <label>rTorrent Password</label>
-                                        <input type="password" id="rtorrent_password" name="rtorrent_password" value="${config['rtorrent_password']| h}" size="30">
-                                </div>
-                                <div class="row">
-                                        <label>rTorrent Directory</label>
-                                        <input type="text" name="rtorrent_directory" value="${config['rtorrent_directory']}" size="30"><br/>
-                                        <small>Folder path where torrent download will be assigned</small>
-                                </div>
-                                <div class="row">
-                                        <label>Label</label>
-                                        <input type="text" name="rtorrent_label" value="${config['rtorrent_label']}" size="30"><br/>
-                                        <small>Label to assign for torrents</small>
-                                </div>
-                                <div class="row checkbox left clearfix">
-                                        <input id="rtorrent_startonload" type="checkbox" name="rtorrent_startonload" value="1" ${config['rtorrent_startonload']} /><label>Start Torrent on Successful Load</label>
-                                        <small>Automatically start torrent on successful loading within rtorrent client</small>
-                                </div>
-                                <div class="row">
-                                        <img name="rtorrent_statusicon" id="rtorrent_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                        <input type="button" value="Test Connection" id="rtorrent_test" />
-                                </div>
-                        </fieldset>
-			<fieldset id="transmission_options">
-				<div class="row">
-					<label>Transmission Host</label>
-					<input type="text" name="transmission_host" value="${config['transmission_host']}" size="30">
-				</div>
-				<div class="row">
-					<label>Transmission Username</label>
-					<input type="text" name="transmission_username" value="${config['transmission_username']}" size="30">
-				</div>
-				<div class="row">
-					<label>Transmission Password</label>
-					<input type="password" name="transmission_password" value="${config['transmission_password']| h}" size="30">
-				</div>
-                <div class="row">
-                        <label>Transmission Directory</label>
-                        <input type="text" name="transmission_directory" value="${config['transmission_directory']}" size="30"><br/>
-                        <small>Folder path where torrent download will be assigned</small>
-                </div>
-			</fieldset>
-            			<fieldset id="deluge_options">
-				<div class="row">
-					<label>Deluge Host:Port </label>
-					<input type="text" name="deluge_host" value="${config['deluge_host']}" size="30">
-                                        <small>(ie. 192.168.1.2:58846) port uses the deluge daemon port (remote connection to daemon has to be enabled)</small>
-				</div>
-				<div class="row">
-					<label>Deluge Username</label>
-					<input type="text" name="deluge_username" value="${config['deluge_username']}" size="30">
-				</div>
-				<div class="row">
-					<label>Deluge Password</label>
-					<input type="password" name="deluge_password" value="${config['deluge_password']}" size="30">
-				</div>
-				<div class="row">
-					<label>Deluge Label</label>
-					<input type="text" name="deluge_label" value="${config['deluge_label']}" size="30"><br/>
-					<small>Label to be used on the torrents</small>
-				</div>
-			</fieldset>
-                        </fieldset>
-                                <fieldset id="qbittorrent_options">
-                                <div class="row">
-                                        <label>qBittorrent Host:Port </label>
-                                        <input type="text" name="qbittorrent_host" id="qbittorrent_host" value="${config['qbittorrent_host']}" size="30">
-                                </div>
-                                <div class="row">
-                                        <label>qBittorrent Username</label>
-                                        <input type="text" name="qbittorrent_username" id="qbittorrent_username" value="${config['qbittorrent_username']}" size="30">
-                                </div>
-                                <div class="row">
-                                        <label>qBittorrent Password</label>
-                                        <input type="password" name="qbittorrent_password" id="qbittorrent_password" value="${config['qbittorrent_password']}" size="30">
-                                </div>
-                                <div class="row">
-                                        <label>qBittorrent Label</label>
-                                        <input type="text" name="qbittorrent_label" value="${config['qbittorrent_label']}" size="30"><br/>
-                                        <small>Label to be used on the torrents</small>
-                                </div>
-                                <div class="row">
-                                        <label>qBittorrent Folder</label>
-                                        <input type="text" name="qbittorrent_folder" value="${config['qbittorrent_folder']}" size="30"><br/>
-                                        <small>Folder path where torrents will be assigned to</small>
-                                </div>
-                                <div class="row">
-                                   <label>Add torrent action:</label>
-                                   <select name="qbittorrent_loadaction">
-                                    %for x in ['default', 'force_start', 'pause']:
-                                           <%
-                                                  if config['qbittorrent_loadaction'] == x:
-                                                      outputselect = 'selected'
-                                                  else:
-                                                      outputselect = ''
-                                            %>
-                                            <option value=${x} ${outputselect}>${x}</option>
-                                    %endfor
-                                   </select>
-                              </div>
-                              <div class="row">
-                                    <img name="qbittorrent_statusicon" id="qbittorrent_statusicon" src="interfaces/default/images/successs.png" style="float:right;visibility:hidden;" height="20" width="20" />
-                                    <input type="button" value="Test Connection" id="qbittorrent_test" />
-                              </div>
-                        </fieldset>
-                     </div>
-                </td>
-            </tr>
-	    </table>
-	</div>
-	<div id="tabs-4">
-        <table class="configtable" summary="Search Providers">
-	    <tr>
-                <td>
-                        <fieldset>
-                          <div class="row checkbox left clearfix">
-                            <input id="enable_rss" type="checkbox" onclick="initConfigCheckbox($(this));" name="enable_rss" value=1 ${config['enable_rss']} /><label>Enable RSS Feed Searches (nzbs & torrents)</label>
-                          </div>
-                          <div class="config">
-                            <label>RSS Interval Feed Check</label>
-                            <input type="text" name="rss_checkinterval" value="${config['rss_checkinterval']}" size="6" /><small>(Mins)</small>
-                            <a href="#" style="float:right" type="button" onclick="doAjaxCall('force_rss',$(this))" data-success="RSS Force now running" data-error="Error trying to retrieve RSS Feeds"><span class="ui-icon ui-icon-extlink"></span>Force RSS</a>
-                            </br><small>last run: ${config['rss_last']}</small>
-                          </div>
-                        </fieldset>
-                	<fieldset>
+
                 		<div class="row checkbox left clearfix">
-                                    <input id="usenzbsu" type="checkbox" onclick="initConfigCheckbox($(this));" name="nzbsu" value="1" ${config['nzbsu']} /><legend>NZB.SU</legend>
+                                    <input id="usenzbsu" type="checkbox" onclick="initConfigCheckbox($(this));" name="nzbsu" value="1" ${config['nzbsu']} /><label>NZB.SU</label>
                 		</div>
                 		<div class="config">
                                         <div class="row checkbox">
@@ -888,7 +845,7 @@
                                                 <input id="enable_public" title="Use Public Torrents" type="checkbox" name="enable_public" value=1 ${config['enable_public']} /><label>Enable Public Torrent Search</label>
                                                 <div align="left">
                                                    <small class="heading"><span style="float: left; margin-left: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>Search: WWT / RSS: WWT</small>
-                                                </div>                                            
+                                                </div>
                                          </div>
                                          <div class="row checkbox left clearfix">
                                                 <input type="checkbox" id="enable_32p" onclick="initConfigCheckbox($(this));" name="enable_32p" value=1 ${config['enable_32p']} /><label>Enable 32P</label>
@@ -896,7 +853,7 @@
                                                   <small class="heading"><span style="float: left; margin-left: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>python 2.7.9 required for 32P usage</small>
                                                 </div>
                                          </div>
-                                         <div class="config"> 
+                                         <div class="config">
                                              <fieldset>
                                                 <div align="center">
                                                     <input type="radio" name="mode_32p" id="legacymode_32p" value="0" ${config['legacymode_32p']}> Legacy Mode <input type="radio" name="mode_32p" id="authmode_32p" value="1" ${config['authmode_32p']}> Auth Mode
@@ -994,9 +951,14 @@
                                 </div>
                         </fieldset>
 
-                </td>
-        
-                <td>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body">
                         <fieldset>
                                 <legend>Newznab</legend>
                                 <div class="row checkbox">
@@ -1056,26 +1018,17 @@
                                 </div>
                         </fieldset>
 
-                </td>
-
-
-            </tr>
-             <tr>
-                      <%
-                           porder = []
-                           for k,v in sorted(mylar.CONFIG.PROVIDER_ORDER.iteritems(), key=itemgetter(0), reverse=False):
-                               porder.append(v)
-                           porder = ', '.join(porder)
-                       %>
-                       <legend><center>Search Order: ${porder}</center></legend>
-             </tr>
-
-        </table>
-	</div>
-	<div id="tabs-5">
-        <table class="configtable" summary="Post Processing">
-            <tr>
-                <td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-5">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body">
                         <fieldset>
                                 <legend>Quality</legend>
                                 <div class="row radio left clearfix">
@@ -1093,7 +1046,6 @@
                                        <div class="row">
                                            <input type="text" name="minsize" value="${config['minsize']}" size="6">
                                        </div>
-                                </div>
                                 </div>
                          </fieldset>
                          <fieldset>
@@ -1130,7 +1082,7 @@
                                  <input type="checkbox" id="ddump" onclick="initConfigCheckbox($this));" name="ddump" value="1" ${config['ddump']} /><label>Enable Duplicate Dump Folder</label>
                              </div>
                                 <div class="config">
-                                    <div class="row"">
+                                    <div class="row">
                                        <label>Full path to move files determined to be duplicates</label>
                                        <input type="text" name="duplicate_dump" value="${config['duplicate_dump']}" size="30">
                                     </div>
@@ -1148,9 +1100,14 @@
                                 </div>
                         </fieldset>
 
-               	</td>
-                <td>
-                        <fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header"></h5>
+                            <div class="card-body">
+                                                        <fieldset>
                                 <legend>Post-Processing</legend>
                                 <div class="row checkbox left clearfix">
                                      <input type="checkbox" id="post_processing" onclick="initConfigCheckbox($this));" name="post_processing" value="1" ${config['post_processing']} /><label>Enable Post-Processing<small> (not checked = NO post-processing/post-management)</small></label>
@@ -1223,7 +1180,7 @@
                                         <input type="text" name="extra_scripts" value="${config['extra_scripts']}" size="30">
                                         <small>enter in the absolute path to the script</small>
                                     </div>
-                                </div>                           
+                                </div>
                 	</fieldset>
                         <fieldset>
                                 <legend>Metadata Tagging</legend><small class="heading"><span style="float: left; margin-right: .3em; margin-top: 4px;" class="ui-icon ui-icon-info"></span>ComicTagger is included</small>
@@ -1254,20 +1211,21 @@
                                 <div id="warningmeta" style="color:Green; font-family:Calibri; font-size:small; font-weight:bold; text-align:center"></div>
                         </fieldset>
 
-               </td>
-            </tr>
-		</table>
-	</div>
-	<div id="tabs-6">
-        <table class="configtable" summary="Advanced Settings">
-            <tr>
-                <td>                
-                	<fieldset>
-                		<legend>Renaming options</legend>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-6">
+                <div class="row display-flex">
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header">Renaming Options</h5>
+                            <div class="card-body">
                                 <div class="row checkbox left clearfix">
                                      <input type="checkbox" name="rename_files" value="1" ${config['rename_files']} /><label>Rename files </label>
                                 </div>
-                		<div>
+                		        <div>
                                      <label>*Folder Format is used only when adding new comics*</label>
                                 </div>
                                 <div class="row">
@@ -1291,10 +1249,12 @@
                                                                 E.g.: $Series $Issue ($Year) = Animal Man 0 (2012) </small>
                                     <small>if tag isn't available, won't create it</small>
                                  </div>
-                      </fieldset>
-                	
-    				<fieldset>
-    					<legend>Advanced Options</legend>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Advanced Options</h5>
+                            <div class="card-body">
+
                                 <div class="row checkbox">
                                       <input id="replace_spaces" type="checkbox" onclick="initConfigCheckbox($(this));" name="replace_spaces" value="1" ${config['replace_spaces']} /><label>Replace Spaces</label>
                                 </div>
@@ -1335,54 +1295,72 @@
                                    <small>(will work regardless if Rename Files is enabled)</small>
                                 </div>
 
-    				</fieldset>
-    				
-				</td>
-				<td>
-					
-		        	<fieldset>
-		        		<legend>Miscellaneous</legend>
-                                        <div class="row checkbox left clearfix">
-                                                   <input type="checkbox" style="vertical-align: middle; margin: 3px; margin-top: -1px;" name="autowant_upcoming" value="1" ${config['autowant_upcoming']} /><label>Automatically Mark Upcoming Issues as Wanted</label>
-                                                   <input type="checkbox" style="vertical-align: middle; margin: 3px; margin-top: -1px;" name="autowant_all" value="1" ${config['autowant_all']} /><label>Automatically Mark All Issues as Wanted</label>
-                                                   <input type="checkbox" style="vertical-align: middle; margin: 3px; margin-top: -1px;" name="comic_cover_local" value="1" ${config['comic_cover_local']} /><label>Place cover.jpg into Comic Directory for each comic</label>
-                                                   <input type="checkbox" style="vertical-align: middle; margin: 3px; margin-top: -1px;" name="cvinfo" value="1" ${config['cvinfo']} /><label>Write cvinfo into each comic directory</label>
-                                                   <input type="checkbox" style="vertical-align: bottom; margin: 3px; margin-top: -1px;" name="alternate_latest_series_covers" value="1" ${config['alternate_latest_series_covers']} /><label>Alternate Series Covers</label>
-                                                   %if mylar.CONFIG.ENABLE_TORRENTS:
-                                                       <input type="checkbox" style="vertical-align: middle; margin: 3px; margin-top: -1px;" name="snatchedtorrent_notify" value="1" ${config['snatchedtorrent_notify']} /><label>Manual Post-Processing - Notify on Completed Torrents</label>
-                                                   %endif
 
-                                        </div>
-		        	</fieldset>
-					<fieldset>
-						<legend>Interface</legend>
-						<div class="row">
-							<label>Interface</label> 
-							<select name="interface"><h3>
-							%for interface in config['interface_list']:
-								<%
-									if interface == mylar.CONFIG.INTERFACE:
-										selected = 'selected="selected"'
-									else:
-										selected = ''
-								%>
-								<option value="${interface}" ${selected}>${interface}</option>
-							%endfor
-							</select>
-							
-						</div>
-						<div class="row">
-							<label>Log Directory:</label>
-							<input type="text" name="log_dir" value="${config['log_dir']}" size="50">
-						</div>
-                                                <div class="row">
-                                                        <label>Maximum Log Size (bytes):</label>
-                                                        <input type="text" name="max_logsize" value="${config['max_logsize']}" size="20">
-                                                </div>
-
-					</fieldset>
-                                        <h2>Notifications</h2>
-                                        <fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-light">
+                            <h5 class="card-header">Miscellaneous</h5>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="autowant_upcoming" name="autowant_upcoming" value="1" ${config['autowant_upcoming']} />
+                                    <label for="autowant_upcoming" class="form-check-label">Automatically Mark Upcoming Issues as Wanted</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="autowant_all" class="form-check-input" name="autowant_all" value="1" ${config['autowant_all']} />
+                                    <label for="autowant_all" class="form-check-label">Automatically Mark All Issues as Wanted</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="comic_cover_local" class="form-check-input" name="comic_cover_local" value="1" ${config['comic_cover_local']} />
+                                    <label for="comic_cover_local" class="form-check-label">Place cover.jpg into Comic Directory for each comic</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="cvinfo" class="form-check-input" name="cvinfo" value="1" ${config['cvinfo']} />
+                                    <label for="cvinfo" class="form-check-label">Write cvinfo into each comic directory</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="alternate_latest_series_covers" class="form-check-input" name="alternate_latest_series_covers" value="1" ${config['alternate_latest_series_covers']} />
+                                    <label for="alternate_latest_series_covers" class="form-check-label">Alternate Series Covers</label>
+                                </div>
+                                %if mylar.CONFIG.ENABLE_TORRENTS:
+                                <div class="form-check">
+                                    <input type="checkbox" id="snatchedtorrent_notify" class="form-check-input" name="snatchedtorrent_notify" value="1" ${config['snatchedtorrent_notify']} />
+                                    <label for="snatchedtorrent_notify" class="form-check-label">Manual Post-Processing - Notify on Completed Torrents</label>
+                                </div>
+                                %endif
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Interface</h5>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Interface</label>
+                                    <select name="interface">
+                                        %for interface in config['interface_list']:
+                                            <%
+                                                if interface == mylar.CONFIG.INTERFACE:
+                                                    selected = 'selected="selected"'
+                                                else:
+                                                    selected = ''
+                                            %>
+                                            <option value="${interface}" ${selected}>${interface}</option>
+                                        %endfor
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <label>Log Directory:</label>
+                                    <input type="text" name="log_dir" value="${config['log_dir']}" size="50">
+                                </div>
+                                <div class="row">
+                                        <label>Maximum Log Size (bytes):</label>
+                                        <input type="text" name="max_logsize" value="${config['max_logsize']}" size="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card bg-light">
+                            <h5 class="card-header">Notifications</h5>
+                            <div class="card-body">
                                                 <h3><img src="interfaces/default/images/prowl_logo.png" style="vertical-align: middle; margin: 3px; margin-top: -1px;" height="30" width="30"/>Prowl</h3>
                                                 <div class="row checkbox">
                                                     <input type="checkbox" name="prowl_enabled" id="prowl" value="1" ${config['prowl_enabled']} /><label>Enable Prowl Notifications</label>
@@ -1423,7 +1401,7 @@
                                 <select name="nma_priority">
                                         %for x in [-2,-1,0,1,2]:
                                                 <%
-                                                        if config['nma_priority'] == x:	
+                                                        if config['nma_priority'] == x:
                                                                 nma_priority_selected = 'selected'
                                                         else:
                                                                 nma_priority_selected = ''
@@ -1450,7 +1428,7 @@
                             </div>
                         </div>
                      </fieldset>
-                                        
+
                      <fieldset>
                         <h3><img src="interfaces/default/images/pushover_logo.png" style="vertical-align: middle; margin: 3px; margin-top: -1px;" height="30" width="30"/>Pushover</h3>
                         <div class="row checkbox">
@@ -1479,7 +1457,7 @@
                                  <input type="text" name="pushoverstatus" style="text-align:center; font-size:11px;" id="pushoverstatus" size="55" DISABLED />
                             </div>
                         </div>
-                     </fieldset>            
+                     </fieldset>
 
                      <fieldset>
                         <h3><img src="interfaces/default/images/boxcar_logo.png" style="vertical-align: middle; margin: 3px; margin-top: -1px;" height="30" width="30"/>Boxcar.IO</h3>
@@ -1576,10 +1554,12 @@
                         </div>
                     </fieldset>
 
-	       </td>
-             </tr>
-        </table>
-    </div>	
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <input type="button" value="Save Changes" onclick="doAjaxCall('configUpdate',$(this),'tabs',true);return false;" data-success="Changes saved successfully">
         <div class="message">
         	<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>Web Interface changes require a restart to take effect</p>
