@@ -2323,7 +2323,11 @@ def searcher(nzbprov, nzbname, comicinfo, link, IssueID, ComicID, tmpprov, direc
     sent_to = None
     t_hash = None
     if mylar.CONFIG.ENABLE_DDL is True and nzbprov == 'ddl':
-        ggc = getcomics.GC(issueid=IssueID, comicid=ComicID)
+        if all([IssueID is None, IssueArcID is not None]):
+            tmp_issueid = IssueArcID
+        else:
+            tmp_issueid = IssueID
+        ggc = getcomics.GC(issueid=tmp_issueid, comicid=ComicID)
         sendsite = ggc.loadsite(nzbid, link)
         ddl_it = ggc.parse_downloadresults(nzbid, link)
         if ddl_it['success'] is True:
@@ -2725,10 +2729,6 @@ def notify_snatch(sent_to, comicname, comyear, IssueNumber, nzbprov, pack):
         logger.info(u"Sending Prowl notification")
         prowl = notifiers.PROWL()
         prowl.notify(snatched_name, 'Download started using %s' % sent_to)
-    if mylar.CONFIG.NMA_ENABLED and mylar.CONFIG.NMA_ONSNATCH:
-        logger.info(u"Sending NMA notification")
-        nma = notifiers.NMA()
-        nma.notify(snline=snline, snatched_nzb=snatched_name, sent_to=sent_to, prov=nzbprov)
     if mylar.CONFIG.PUSHOVER_ENABLED and mylar.CONFIG.PUSHOVER_ONSNATCH:
         logger.info(u"Sending Pushover notification")
         pushover = notifiers.PUSHOVER()
@@ -2749,6 +2749,10 @@ def notify_snatch(sent_to, comicname, comyear, IssueNumber, nzbprov, pack):
         logger.info(u"Sending Slack notification")
         slack = notifiers.SLACK()
         slack.notify("Snatched", snline, snatched_nzb=snatched_name, sent_to=sent_to, prov=nzbprov)
+    if mylar.CONFIG.EMAIL_ENABLED and mylar.CONFIG.EMAIL_ONGRAB:
+        logger.info(u"Sending email notification")
+        email = notifiers.EMAIL()
+        email.notify(snline + " - " + snatched_name, "Mylar notification - Snatch", module="[SEARCH]")
 
     return
 
