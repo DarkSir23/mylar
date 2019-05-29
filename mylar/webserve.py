@@ -5073,10 +5073,6 @@ class WebInterface(object):
                     "prowl_onsnatch": helpers.checked(mylar.CONFIG.PROWL_ONSNATCH),
                     "prowl_keys": mylar.CONFIG.PROWL_KEYS,
                     "prowl_priority": mylar.CONFIG.PROWL_PRIORITY,
-                    "nma_enabled": helpers.checked(mylar.CONFIG.NMA_ENABLED),
-                    "nma_apikey": mylar.CONFIG.NMA_APIKEY,
-                    "nma_priority": int(mylar.CONFIG.NMA_PRIORITY),
-                    "nma_onsnatch": helpers.checked(mylar.CONFIG.NMA_ONSNATCH),
                     "pushover_enabled": helpers.checked(mylar.CONFIG.PUSHOVER_ENABLED),
                     "pushover_onsnatch": helpers.checked(mylar.CONFIG.PUSHOVER_ONSNATCH),
                     "pushover_apikey": mylar.CONFIG.PUSHOVER_APIKEY,
@@ -5098,6 +5094,18 @@ class WebInterface(object):
                     "slack_enabled": helpers.checked(mylar.CONFIG.SLACK_ENABLED),
                     "slack_webhook_url": mylar.CONFIG.SLACK_WEBHOOK_URL,
                     "slack_onsnatch": helpers.checked(mylar.CONFIG.SLACK_ONSNATCH),
+                    "email_enabled": helpers.checked(mylar.CONFIG.EMAIL_ENABLED),
+                    "email_from": mylar.CONFIG.EMAIL_FROM,
+                    "email_to": mylar.CONFIG.EMAIL_TO,
+                    "email_server": mylar.CONFIG.EMAIL_SERVER,
+                    "email_user": mylar.CONFIG.EMAIL_USER,
+                    "email_password": mylar.CONFIG.EMAIL_PASSWORD,
+                    "email_port": int(mylar.CONFIG.EMAIL_PORT),
+                    "email_raw": helpers.radio(int(mylar.CONFIG.EMAIL_ENC), 0),
+                    "email_ssl": helpers.radio(int(mylar.CONFIG.EMAIL_ENC), 1),
+                    "email_tls": helpers.radio(int(mylar.CONFIG.EMAIL_ENC), 2),
+                    "email_ongrab": helpers.checked(mylar.CONFIG.EMAIL_ONGRAB),
+                    "email_onpost": helpers.checked(mylar.CONFIG.EMAIL_ONPOST),
                     "enable_extra_scripts": helpers.checked(mylar.CONFIG.ENABLE_EXTRA_SCRIPTS),
                     "extra_scripts": mylar.CONFIG.EXTRA_SCRIPTS,
                     "enable_snatch_script": helpers.checked(mylar.CONFIG.ENABLE_SNATCH_SCRIPT),
@@ -5366,9 +5374,9 @@ class WebInterface(object):
                            'failed_auto', 'post_processing', 'enable_check_folder', 'enable_pre_scripts', 'enable_snatch_script', 'enable_extra_scripts',
                            'enable_meta', 'cbr2cbz_only', 'ct_tag_cr', 'ct_tag_cbl', 'ct_cbz_overwrite', 'rename_files', 'replace_spaces', 'zero_level',
                            'lowercase_filenames', 'autowant_upcoming', 'autowant_all', 'comic_cover_local', 'alternate_latest_series_covers', 'cvinfo', 'snatchedtorrent_notify',
-                           'prowl_enabled', 'prowl_onsnatch', 'nma_enabled', 'nma_onsnatch', 'pushover_enabled', 'pushover_onsnatch', 'boxcar_enabled',
+                           'prowl_enabled', 'prowl_onsnatch', 'pushover_enabled', 'pushover_onsnatch', 'boxcar_enabled',
                            'boxcar_onsnatch', 'pushbullet_enabled', 'pushbullet_onsnatch', 'telegram_enabled', 'telegram_onsnatch', 'slack_enabled', 'slack_onsnatch',
-                           'opds_enable', 'opds_authentication', 'opds_metainfo', 'enable_ddl']
+                           'email_enabled', 'email_enc', 'email_ongrab', 'email_onpost', 'opds_enable', 'opds_authentication', 'opds_metainfo', 'enable_ddl']
 
         for checked_config in checked_configs:
             if checked_config not in kwargs:
@@ -5858,16 +5866,6 @@ class WebInterface(object):
         return mylar.rsscheck.torrents(pickfeed='4', seriesname=search)
     search_32p.exposed = True
 
-    def testNMA(self, apikey):
-        nma = notifiers.NMA(test_apikey=apikey)
-        result = nma.test_notify()
-        if result['status'] == True:
-            return result['message']
-        else:
-            logger.warn('APIKEY used for test was : %s' % apikey)
-            return result['message']
-    testNMA.exposed = True
-
     def testprowl(self):
         prowl = notifiers.prowl()
         result = prowl.test_notify()
@@ -5927,6 +5925,16 @@ class WebInterface(object):
             return "Error sending test message to Slack"
     testslack.exposed = True
 
+    def testemail(self, emailfrom, emailto, emailsvr, emailport, emailuser, emailpass, emailenc):
+        email = notifiers.EMAIL(test_emailfrom=emailfrom, test_emailto=emailto, test_emailsvr=emailsvr, test_emailport=emailport, test_emailuser=emailuser, test_emailpass=emailpass, test_emailenc=emailenc)
+        result = email.test_notify()
+
+        if result == True:
+            return "Successfully sent email. Check your mailbox."
+        else:
+            logger.warn('Email test has gone horribly wrong. Variables used were [FROM: %s] [TO: %s] [SERVER: %s] [PORT: %s] [USER: %s] [PASSWORD: ********] [ENCRYPTION: %s]' % (emailfrom, emailto, emailsvr, emailport, emailuser, emailenc))
+            return "Error sending test message via email"
+    testemail.exposed = True
 
     def testrtorrent(self, host, username, password, auth, verify, rpc_url):
         import torrent.clients.rtorrent as TorClient
@@ -5956,14 +5964,38 @@ class WebInterface(object):
             return 'Error establishing connection to Qbittorrent'
         else:
             if qclient['status'] is False:
-                logger.warn('[qBittorrent] Could not establish connection to %s. Error returned:' % (host, qclient['error']))
+                logger.warn('[qBittorrent] Could not establish connection to %s. Error returned: %s' % (host, qclient['error']))
                 return 'Error establishing connection to Qbittorrent'
             else:
-                logger.info('[qBittorrent] Successfully validated connection to %s [%s]' % (host, qclient['version']))
+                logger.info('[qBittorrent] Successfully validated connection to %s [v%s]' % (host, qclient['version']))
                 return 'Successfully validated qBittorrent connection'
     testqbit.exposed = True
 
+    def testdeluge(self, host, username, password):
+        import torrent.clients.deluge as DelugeClient
+        client = DelugeClient.TorrentClient()
+        dclient = client.connect(host, username, password, True)
+        if not dclient:
+            logger.warn('[Deluge] Could not establish connection to %s' % host)
+            return 'Error establishing connection to Deluge'
+        else:
+            if dclient['status'] is False:
+                logger.warn('[Deluge] Could not establish connection to %s. Error returned: %s' % (host, dclient['error']))
+                return 'Error establishing connection to Deluge'
+            else:
+                logger.info('[Deluge] Successfully validated connection to %s [daemon v%s; libtorrent v%s]' % (host, dclient['daemon_version'], dclient['libtorrent_version']))
+                return 'Successfully validated Deluge connection'
+    testdeluge.exposed = True
+
     def testnewznab(self, name, host, ssl, apikey):
+        logger.fdebug('ssl/verify: %s' % ssl)
+        if 'ssl' == '0' or ssl == '1':
+            ssl = bool(int(ssl))
+        else:
+            if ssl == 'false':
+                ssl = False
+            else:
+                ssl = True
         result = helpers.newznab_test(name, host, ssl, apikey)
         if result is True:
             logger.info('Successfully tested %s [%s] - valid api response received' % (name, host))

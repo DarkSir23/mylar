@@ -156,11 +156,6 @@ _CONFIG_DEFINITIONS = OrderedDict({
     'PROWL_KEYS': (str, 'Prowl', None),
     'PROWL_ONSNATCH': (bool, 'Prowl', False),
 
-    'NMA_ENABLED': (bool, 'NMA', False),
-    'NMA_APIKEY': (str, 'NMA', None),
-    'NMA_PRIORITY': (int, 'NMA', 0),
-    'NMA_ONSNATCH': (bool, 'NMA', False),
-
     'PUSHOVER_ENABLED': (bool, 'PUSHOVER', False),
     'PUSHOVER_PRIORITY': (int, 'PUSHOVER', 0),
     'PUSHOVER_APIKEY': (str, 'PUSHOVER', None),
@@ -186,6 +181,17 @@ _CONFIG_DEFINITIONS = OrderedDict({
     'SLACK_ENABLED': (bool, 'SLACK', False),
     'SLACK_WEBHOOK_URL': (str, 'SLACK', None),
     'SLACK_ONSNATCH': (bool, 'SLACK', False),
+
+    'EMAIL_ENABLED': (bool, 'Email', False),
+    'EMAIL_FROM': (str, 'Email', ''),
+    'EMAIL_TO': (str, 'Email', ''),
+    'EMAIL_SERVER': (str, 'Email', ''),
+    'EMAIL_USER': (str, 'Email', ''),
+    'EMAIL_PASSWORD': (str, 'Email', ''),
+    'EMAIL_PORT': (int, 'Email', 25),
+    'EMAIL_ENC': (int, 'Email', 0),
+    'EMAIL_ONGRAB': (bool, 'Email', True),
+    'EMAIL_ONPOST': (bool, 'Email', True),
 
     'POST_PROCESSING': (bool, 'PostProcess', False),
     'FILE_OPTS': (str, 'PostProcess', 'move'),
